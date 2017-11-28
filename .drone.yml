@@ -4,3 +4,33 @@ pipeline:
     image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
     privileged: true
     commands: run
+
+  init:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt init
+
+  validate:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt validate
+
+  plan:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt plan
+
+  apply:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt apply -auto-approve
+    when:
+      branch: master
+
+  clean_up:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt destroy -force
+    when:
+      status: [ failure, success ]
+      branch: master
