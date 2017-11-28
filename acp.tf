@@ -1,22 +1,25 @@
 module "acp" {
   source = "./dummy"
+
   providers = {
     aws = "aws.CI"
   }
+
   cidr_block = "10.0.0.0/16"
 }
 
 module "acpagain" {
   source = "./dummy"
+
   providers = {
     aws = "aws.CI"
   }
+
   cidr_block = "10.2.0.0/16"
 }
 
-
 data "aws_vpc_peering_connection" "pc" {
-  vpc_id = "${module.acp.vpc}"
+  vpc_id          = "${module.acp.vpc}"
   peer_cidr_block = "${module.acp.vpc_cidr_block}"
 }
 
