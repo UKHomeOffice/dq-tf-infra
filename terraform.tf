@@ -6,6 +6,10 @@ variable "CI_ID" {}
 variable "CI_KEY" {}
 
 provider "aws" {
+  region = "eu-west-2"
+}
+
+provider "aws" {
   alias      = "CI"
   region     = "eu-west-2"
   access_key = "${var.CI_ID}"
