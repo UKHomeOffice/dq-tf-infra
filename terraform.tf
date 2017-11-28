@@ -6,8 +6,8 @@ variable "CI_ID" {}
 variable "CI_KEY" {}
 
 provider "aws" {
-  alias = "CI"
-  region = "eu-west-2"
+  alias      = "CI"
+  region     = "eu-west-2"
   access_key = "${var.CI_ID}"
   secret_key = "${var.CI_KEY}"
 }
@@ -16,8 +16,8 @@ variable "MOCK_ID" {}
 variable "MOCK_KEY" {}
 
 provider "aws" {
-  alias = "MOCK"
-  region = "eu-west-2"
+  alias      = "MOCK"
+  region     = "eu-west-2"
   access_key = "${var.MOCK_ID}"
   secret_key = "${var.MOCK_KEY}"
 }
@@ -26,8 +26,8 @@ variable "APPS_ID" {}
 variable "APPS_KEY" {}
 
 provider "aws" {
-  alias = "APPS"
-  region = "eu-west-2"
+  alias      = "APPS"
+  region     = "eu-west-2"
   access_key = "${var.APPS_ID}"
   secret_key = "${var.APPS_KEY}"
 }
