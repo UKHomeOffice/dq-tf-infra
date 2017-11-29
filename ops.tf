@@ -1,5 +1,5 @@
 module "ops" {
-  source = "github.com/ukhomeoffice/dq-tf-ops?ref=initial-ops"
+  source = "github.com/ukhomeoffice/dq-tf-ops"
 
   providers = {
     aws = "aws.APPS"

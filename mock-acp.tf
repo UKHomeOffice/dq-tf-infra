@@ -1,5 +1,5 @@
 module "mock-acp" {
-  source = "github.com/ukhomeoffice/dq-tf-mock-acp?ref=initial-mock-acp"
+  source = "github.com/ukhomeoffice/dq-tf-mock-acp"
 
   providers = {
     aws = "aws.MOCK"
