@@ -2,7 +2,7 @@ module "acpcicd" {
   source = "github.com/ukhomeoffice/dq-tf-mock-acp?ref=initial-mock-acp"
 
   providers = {
-    aws = "aws.APPS"
+    aws = "aws.MOCK"
   }
 
   cidr_block            = "10.7.0.0/16"
