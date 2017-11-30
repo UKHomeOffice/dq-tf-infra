@@ -20,6 +20,11 @@ pipeline:
     commands:
       - terragrunt plan
 
+  graph:
+    image: chrisns/docker-terragrunt
+    commands:
+      - terragrunt graph
+
   apply:
     image: chrisns/docker-terragrunt
     commands:
