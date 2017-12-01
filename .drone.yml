@@ -5,10 +5,10 @@ pipeline:
     commands:
       - terragrunt init
 
-#  testsuite:
-#    image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
-#    privileged: true
-#    commands: run
+  testsuite:
+    image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
+    privileged: true
+    commands: run
 
   validate:
     image: chrisns/docker-terragrunt
