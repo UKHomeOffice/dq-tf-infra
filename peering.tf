@@ -13,13 +13,13 @@ module "peering" {
   name_prefix                    = "dq-"
 
   SGCIDRs = [
-    "10.1.0.0/16",
-    "10.2.0.0/16",
     "10.3.0.0/16",
-    "10.4.0.0/16",
-    "10.5.0.0/16",
-    "10.6.0.0/16",
-    "10.7.0.0/16",
+    "${module.apps.cidr_block}",
+    "${module.ops.cidr_block}",
+    "${module.mock-acp.acpvpn_cidr_block}",
+    "${module.mock-acp.acpprod_cidr_block}",
+    "${module.mock-acp.acpops_cidr_block}",
+    "${module.mock-acp.acpcicd_cidr_block}",
   ]
 }
 
