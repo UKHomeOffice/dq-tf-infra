@@ -14,7 +14,7 @@ module "peering" {
 
   SGCIDRs = [
     "10.3.0.0/16",
-    "${module.apps.appsvpc_cidr_block"}",
+    "${module.apps.appsvpc_cidr_block}",
     "${module.ops.opsvpc_cidr_block}",
     "${module.mock-acp.acpvpn_cidr_block}",
     "${module.mock-acp.acpprod_cidr_block}",
