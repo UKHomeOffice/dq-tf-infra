@@ -14,3 +14,6 @@ module "apps" {
 output "appsvpc_id" {
   value = "${module.apps.appsvpc_id}"
 }
+output "appsvpc_cidr_block" {
+  value  = "${module.apps.appsvpc_cidr_block}"
+}
