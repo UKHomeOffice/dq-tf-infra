@@ -10,3 +10,7 @@ module "apps" {
   az                       = "eu-west-2a"
   name_prefix              = "dq-"
 }
+
+output "appsvpc_id" {
+  value = "${module.apps.appsvpc_id}"
+}
