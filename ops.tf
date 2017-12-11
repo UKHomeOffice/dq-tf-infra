@@ -10,3 +10,7 @@ module "ops" {
   az                    = "eu-west-2a"
   name_prefix           = "dq-"
 }
+
+output "opsvpc_cidr_block" {
+  value = "${module.ops.opsvpc_cidr_block}"
+}
