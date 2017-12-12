@@ -32,10 +32,10 @@ pipeline:
     when:
       branch: master
 
-  clean_up:
-    image: chrisns/docker-terragrunt
-    commands:
-      - terragrunt destroy -force
-    when:
-      status: [ failure, success ]
-      branch: master
+#  clean_up:
+#    image: chrisns/docker-terragrunt
+#    commands:
+#      - terragrunt destroy -force
+#    when:
+#      status: [ failure, success ]
+#      branch: master
