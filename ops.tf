@@ -11,6 +11,14 @@ module "ops" {
   name_prefix           = "dq-"
 }
 
+output "opsvpc_id" {
+  value = "${module.ops.opsvpc_id}"
+}
+
 output "opsvpc_cidr_block" {
   value = "${module.ops.opsvpc_cidr_block}"
+}
+
+output "opssubnet_cidr_block" {
+  value = "${module.ops.opssubnet_cidr_block}"
 }
