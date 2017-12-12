@@ -2,8 +2,8 @@ module "peering_to_apps" {
   source = "github.com/UKHomeOffice/tf-peering"
 
   providers = {
-    source = "aws.APPS"
-    dest   = "aws.APPS"
+    aws.source = "aws.APPS"
+    aws.dest   = "aws.APPS"
   }
 
   vpc_source_vpc_id = "${module.peering.peeringvpc_id}"
