@@ -10,6 +10,7 @@ module "apps" {
   az                        = "eu-west-2a"
   name_prefix               = "dq-"
   vpc_peering_to_peering_id = "${aws_vpc_peering_connection.peering_to_apps.id}"
+  vpc_peering_to_ops_id     = "${aws_vpc_peering_connection.apps_to_ops.id}"
 
   route_table_cidr_blocks = {
     peering_cidr = "${module.peering.peeringvpc_cidr_block}"
