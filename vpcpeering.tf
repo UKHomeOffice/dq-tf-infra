@@ -73,3 +73,15 @@ module "peering_to_acpvpn" {
   vpc_source_vpc_id = "${module.peering.peeringvpc_id}"
   vpc_dest_vpc_id   = "${module.mock-acp.acpvpnvpc_id}"
 }
+
+module "ops_to_acpvpn" {
+  source = "github.com/UKHomeOffice/tf-peering"
+
+  providers = {
+    aws.source = "aws.APPS"
+    aws.dest   = "aws.MOCK"
+  }
+
+  vpc_source_vpc_id = "${module.ops.opsvpc_id}"
+  vpc_dest_vpc_id   = "${module.mock-acp.acpvpnvpc_id}"
+}
