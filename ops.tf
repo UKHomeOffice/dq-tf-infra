@@ -11,6 +11,9 @@ module "ops" {
   name_prefix               = "dq-"
   vpc_peering_to_peering_id = "1234"
   peering_to_acpvpn_id      = "1234"
+  BDM_HTTPS_TCP             = "443"
+  BDM_SSH_TCP               = "22"
+  BDM_CUSTOM_TCP            = "5432"
 
   route_table_cidr_blocks = {
     peering_cidr = "${module.peering.peeringvpc_cidr_block}"
