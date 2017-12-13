@@ -27,7 +27,6 @@ module "peering" {
     peering_and_acpprod = "${module.peering_to_acpprod.peering_id}"
     peering_and_acpops  = "${module.peering_to_acpops.peering_id}"
     peering_and_acpcicd = "${module.peering_to_acpcicd.peering_id}"
-    peering_and_acpvpn  = "${module.peering_to_acpvpn.peering_id}"
   }
 
   SGCIDRs = [
