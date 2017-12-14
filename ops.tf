@@ -23,6 +23,7 @@ module "ops" {
   data_ingest_custom_TCP    = "5432"
   external_feed_RDP_TCP     = "3389"
   external_feed_custom_TCP  = "5432"
+  greenplum_ip              = "10.1.2.11"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
