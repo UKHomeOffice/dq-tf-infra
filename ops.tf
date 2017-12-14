@@ -5,15 +5,17 @@ module "ops" {
     aws = "aws.APPS"
   }
 
-  cidr_block            = "10.2.0.0/16"
-  vpc_subnet_cidr_block = "10.2.0.0/24"
-  az                    = "eu-west-2a"
-  name_prefix           = "dq-"
-  bastion_linux_ip      = "10.2.0.11"
-  bastion_windows_ip    = "10.2.0.12"
-  BDM_HTTPS_TCP         = "443"
-  BDM_SSH_TCP           = "22"
-  BDM_CUSTOM_TCP        = "5432"
+  cidr_block                = "10.2.0.0/16"
+  vpc_subnet_cidr_block     = "10.2.0.0/24"
+  az                        = "eu-west-2a"
+  name_prefix               = "dq-"
+  bastion_linux_ip          = "10.2.0.11"
+  bastion_windows_ip        = "10.2.0.12"
+  BDM_HTTPS_TCP             = "443"
+  BDM_SSH_TCP               = "22"
+  BDM_CUSTOM_TCP            = "5432"
+  INT_EXT_TABLEAU_RDP_TCP   = "3389"
+  INT_EXT_TABLEAU_HTTPS_TCP = "443"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
