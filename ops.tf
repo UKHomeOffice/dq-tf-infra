@@ -7,6 +7,7 @@ module "ops" {
 
   cidr_block                = "10.2.0.0/16"
   vpc_subnet_cidr_block     = "10.2.0.0/24"
+  public_subnet_cidr_block  = "10.2.2.0/24"
   az                        = "eu-west-2a"
   name_prefix               = "dq-"
   bastion_linux_ip          = "10.2.0.11"
