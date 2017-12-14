@@ -15,6 +15,18 @@ module "mock-acp" {
   acpvpn_vpc_subnet_cidr_block  = "10.4.1.0/24"
   az                            = "eu-west-2a"
   name_prefix                   = "dq-"
+
+  route_table_cidr_blocks = {
+    peering_cidr = "${module.peering.peeringvpc_cidr_block}"
+    apps_cidr    = "${module.apps.appsvpc_cidr_block}"
+    ops_cidr     = "${module.ops.opsvpc_cidr_block}"
+  }
+
+  vpc_peering_connection_ids = {
+    peering_and_acpprod = "${module.peering_to_acpprod.peering_id}"
+    peering_and_acpops  = "${module.peering_to_acpops.peering_id}"
+    peering_and_acpcicd = "${module.peering_to_acpcicd.peering_id}"
+  }
 }
 
 output "acpopsvpc_id" {
