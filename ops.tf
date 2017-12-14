@@ -18,6 +18,8 @@ module "ops" {
   INT_EXT_TABLEAU_HTTPS_TCP = "443"
   data_pipeline_RDP_TCP     = "3389"
   data_pipeline_custom_TCP  = "1433"
+  data_ingest_RDP_TCP       = "3389"
+  data_ingest_custom_TCP    = "5432"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
