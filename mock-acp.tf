@@ -16,6 +16,18 @@ module "mock-acp" {
   az                            = "eu-west-2a"
   name_prefix                   = "dq-"
 
+  tester_ips = {
+    ops_win_tester_ip   = "10.2.0.12"
+    ops_linux_tester_ip = "10.2.0.11"
+    peering_tester_ip   = "10.3.2.11"
+  }
+
+  tester_ports = {
+    ops_rdp_port      = "3389"
+    ops_ssh_port      = "22"
+    peering_http_port = "80"
+  }
+
   acp_private_ips = {
     vpn_tester_ip  = "10.4.1.10"
     prod_tester_ip = "10.5.1.10"
