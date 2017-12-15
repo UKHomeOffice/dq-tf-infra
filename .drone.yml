@@ -8,27 +8,28 @@ pipeline:
   testsuite:
     image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
     privileged: true
+    pull: true
     commands: run
 
   validate:
     image: chrisns/docker-terragrunt
-    commands:
-      - terragrunt validate
+    pull: true
+    commands: terragrunt validate
 
   plan:
     image: chrisns/docker-terragrunt
-    commands:
-      - terragrunt plan
+    pull: true
+    commands: terragrunt plan
 
   graph:
     image: chrisns/docker-terragrunt
-    commands:
-      - terragrunt graph
+    pull: true
+    commands: terragrunt graph
 
   apply:
     image: chrisns/docker-terragrunt
-    commands:
-      - terragrunt apply -auto-approve
+    pull: true
+    commands: terragrunt apply -auto-approve
     when:
       branch: master
 
