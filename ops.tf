@@ -24,6 +24,7 @@ module "ops" {
   external_feed_RDP_TCP     = "3389"
   external_feed_custom_TCP  = "5432"
   greenplum_ip              = "10.1.2.11"
+  BDM_RDS_db_instance_ip    = "${module.apps.bdm_db_server_ip_address}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
