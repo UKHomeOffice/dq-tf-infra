@@ -5,12 +5,15 @@ module "apps" {
     aws = "aws.APPS"
   }
 
-  cidr_block                = "10.1.0.0/16"
-  public_subnet_cidr_block  = "10.1.0.0/24"
-  az                        = "eu-west-2a"
-  name_prefix               = "dq-"
-  vpc_peering_to_peering_id = "${aws_vpc_peering_connection.peering_to_apps.id}"
-  vpc_peering_to_ops_id     = "${aws_vpc_peering_connection.apps_to_ops.id}"
+  cidr_block               = "10.1.0.0/16"
+  public_subnet_cidr_block = "10.1.0.0/24"
+  az                       = "eu-west-2a"
+  name_prefix              = "dq-"
+
+  vpc_peering_connection_ids = {
+    peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
+    peering_to_ops     = "${aws_vpc_peering_connection.apps_to_ops.id}"
+  }
 
   route_table_cidr_blocks = {
     peering_cidr = "${module.peering.peeringvpc_cidr_block}"
@@ -19,6 +22,7 @@ module "apps" {
     acp_prod     = "${module.mock-acp.acpprod_cidr_block}"
     acp_ops      = "${module.mock-acp.acpops_cidr_block}"
     acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
+    ad_cidr      = "${module.ad.cidr_block}"
   }
 }
 
