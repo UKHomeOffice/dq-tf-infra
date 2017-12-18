@@ -13,6 +13,7 @@ module "apps" {
   vpc_peering_connection_ids = {
     peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
     peering_to_ops     = "${aws_vpc_peering_connection.apps_to_ops.id}"
+    peering_to_ad      = "${data.aws_vpc_peering_connection.ad_peering.id}"
   }
 
   route_table_cidr_blocks = {
@@ -24,6 +25,14 @@ module "apps" {
     acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
     ad_cidr      = "${module.ad.cidr_block}"
   }
+}
+
+data "aws_vpc_peering_connection" "ad_peering" {
+  provider      = "aws.APPS"
+  vpc_id        = "${module.apps.appsvpc_id}"
+  owner_id      = "${data.aws_caller_identity.apps.account_id}"
+  peer_vpc_id   = "${module.ad.vpc_id}"
+  peer_owner_id = "${data.aws_caller_identity.apps.account_id}"
 }
 
 output "appsvpc_id" {
