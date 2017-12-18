@@ -33,3 +33,7 @@ output "appsvpc_id" {
 output "appsvpc_cidr_block" {
   value = "${module.apps.appsvpc_cidr_block}"
 }
+
+output "bdm_db_server_ip_address" {
+  value = "${module.apps.bdm_db_server_ip_address}"
+}
