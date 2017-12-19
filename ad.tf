@@ -21,7 +21,7 @@ module "ad" {
   //
   //    "10.1.10.0/24",
 
-  subnet_count = 0
+  subnet_count = 2
   Domain = {
     address     = "dq.homeoffice.gov.uk"
     directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
