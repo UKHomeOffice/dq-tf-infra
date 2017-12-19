@@ -27,14 +27,6 @@ module "apps" {
   }
 }
 
-data "aws_vpc_peering_connection" "ad_peering" {
-  provider      = "aws.APPS"
-  vpc_id        = "${module.apps.appsvpc_id}"
-  owner_id      = "${data.aws_caller_identity.apps.account_id}"
-  peer_vpc_id   = "${module.ad.vpc_id}"
-  peer_owner_id = "${data.aws_caller_identity.apps.account_id}"
-}
-
 output "appsvpc_id" {
   value = "${module.apps.appsvpc_id}"
 }
