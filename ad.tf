@@ -27,8 +27,8 @@ module "ad" {
   }
 
   depends_on = [
-    "${module.apps}",
-    "${module.ops}",
+    "$module.apps",
+    "$module.ops",
   ]
 }
 
