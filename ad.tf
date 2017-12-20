@@ -25,6 +25,11 @@ module "ad" {
     address     = "dq.homeoffice.gov.uk"
     directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
   }
+
+  depends_on = [
+    "${module.apps}",
+    "${module.ops}",
+  ]
 }
 
 output "AD Admin Password" {
