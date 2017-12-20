@@ -12,7 +12,7 @@ module "ad" {
 
   cidr_block                      = "10.99.0.0/16"
   allow_remote_vpc_dns_resolution = false
-  peer_count                      = 2
+  peer_count                      = 0
 
   subnets = []
 
@@ -21,7 +21,7 @@ module "ad" {
   //
   //    "10.1.10.0/24",
 
-  subnet_count = 2
+  subnet_count = 0
   Domain = {
     address     = "dq.homeoffice.gov.uk"
     directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
