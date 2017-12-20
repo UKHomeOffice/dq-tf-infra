@@ -25,7 +25,6 @@ module "ad" {
     address     = "dq.homeoffice.gov.uk"
     directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
   }
-
 }
 
 output "AD Admin Password" {
