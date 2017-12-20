@@ -19,17 +19,13 @@ module "ad" {
     "${module.apps.ad_subnet_id}",
   ]
 
-  subnet_count = 2
+  subnet_count = 0
 
   Domain = {
     address     = "dq.homeoffice.gov.uk"
     directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
   }
 
-  depends_on = [
-    "module.apps",
-    "module.ops",
-  ]
 }
 
 output "AD Admin Password" {
