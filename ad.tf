@@ -15,8 +15,8 @@ module "ad" {
   peer_count                      = 2
 
   subnets = [
-    "${module.apps.ad_subnet_id}",
     "${module.ops.ad_subnet_id}",
+    "${module.apps.ad_subnet_id}",
   ]
 
   subnet_count = 2
