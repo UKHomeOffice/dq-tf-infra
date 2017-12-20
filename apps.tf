@@ -5,10 +5,13 @@ module "apps" {
     aws = "aws.APPS"
   }
 
-  cidr_block               = "10.1.0.0/16"
-  public_subnet_cidr_block = "10.1.0.0/24"
-  az                       = "eu-west-2a"
-  name_prefix              = "dq-"
+  cidr_block                      = "10.1.0.0/16"
+  public_subnet_cidr_block        = "10.1.0.0/24"
+  ad_subnet_cidr_block            = "10.1.16.0/24"
+  az                              = "eu-west-2a"
+  name_prefix                     = "dq-"
+  ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
+  ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
 
   vpc_peering_connection_ids = {
     peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
