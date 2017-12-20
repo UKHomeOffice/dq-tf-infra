@@ -16,7 +16,6 @@ module "apps" {
   vpc_peering_connection_ids = {
     peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
     peering_to_ops     = "${aws_vpc_peering_connection.apps_to_ops.id}"
-    peering_to_ad      = "${data.aws_vpc_peering_connection.ad_peering.id}"
   }
 
   route_table_cidr_blocks = {
@@ -26,7 +25,6 @@ module "apps" {
     acp_prod     = "${module.mock-acp.acpprod_cidr_block}"
     acp_ops      = "${module.mock-acp.acpops_cidr_block}"
     acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
-    ad_cidr      = "${module.ad.cidr_block}"
   }
 }
 
