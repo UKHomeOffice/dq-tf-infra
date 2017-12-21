@@ -58,28 +58,6 @@ pipeline:
     when:
       event: [deployment, push]
 
-  plan-prod:
-    image: chrisns/docker-terragrunt
-    pull: true
-    commands: terragrunt plan
-    environment:
-      - NAMESPACE=prod
-      - TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${PROD_ACC_KEY}
-    when:
-      event: [deployment, push]
-
-  graph-prod:
-    image: chrisns/docker-terragrunt
-    pull: true
-    commands: terragrunt graph
-    environment:
-      - NAMESPACE=prod
-      - TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${PROD_ACC_KEY}
-    when:
-      event: [deployment, push]
-
   apply-prod:
     image: chrisns/docker-terragrunt
     pull: true
