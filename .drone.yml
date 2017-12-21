@@ -2,10 +2,10 @@ pipeline:
 
   init:
     image: chrisns/docker-terragrunt
-    commands: terragrunt init
-    environment:
-      - TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt init
 
   testsuite:
     image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
@@ -16,55 +16,57 @@ pipeline:
   validate:
     image: chrisns/docker-terragrunt
     pull: true
-    commands: terragrunt validate
-    environment:
-      - TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt validate
 
   plan-notprod:
     image: chrisns/docker-terragrunt
     pull: true
-    commands: terragrunt plan
-    environment:
-      - TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt plan
 
   graph-notprod:
     image: chrisns/docker-terragrunt
     pull: true
-    commands: terragrunt graph
-    environment:
-      - TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt graph
 
   apply-notprod:
     image: chrisns/docker-terragrunt
     pull: true
-    commands: terragrunt apply -auto-approve
-    environment:
-      - TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt apply -auto-approve
     when:
       branch: master
 
 ## production
   init:
     image: chrisns/docker-terragrunt
-    commands: terragrunt init -reconfigure
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt init -reconfigure
     environment:
       - NAMESPACE=prod
-      - TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${PROD_ACC_KEY}
     when:
       event: [deployment, push]
 
   apply-prod:
     image: chrisns/docker-terragrunt
     pull: true
-    commands: terragrunt apply -auto-approve
+    commands:
+      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - terragrunt apply -auto-approve
     environment:
       - NAMESPACE=prod
-      - TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - TF_VAR_APPS_KEY=${PROD_ACC_KEY}
     when:
       event: deployment
