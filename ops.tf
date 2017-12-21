@@ -28,6 +28,7 @@ module "ops" {
   BDM_RDS_db_instance_ip          = "${module.apps.bdm_db_server_ip_address}"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
+  adminpassword                   = "${module.ad.AdminPassword}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
