@@ -23,7 +23,7 @@ module "ad" {
 
   Domain = {
     address     = "dq.homeoffice.gov.uk"
-    directoryOU = "OU=dqhomeoffice,DC=dqhomeoffice,DC=gov.uk"
+    directoryOU = "OU=dqhomeoffice,DC=dq,DC=homeoffice,DC=gov.uk"
   }
 }
 
