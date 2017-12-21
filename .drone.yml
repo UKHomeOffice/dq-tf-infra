@@ -27,7 +27,7 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
-      - terragrunt plan
+      - terragrunt plan -lock=false
 
   graph-notprod:
     image: chrisns/docker-terragrunt
