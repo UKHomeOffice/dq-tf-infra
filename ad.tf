@@ -23,10 +23,10 @@ module "ad" {
 
   Domain = {
     address     = "dq.homeoffice.gov.uk"
-    directoryOU = "OU=dqhomeoffice,DC=dq,DC=homeoffice,DC=gov.uk"
+    directoryOU = "OU=dqhomeoffice,DC=dq,DC=homeoffice,DC=gov,DC=uk"
   }
 }
 
-output "AD Admin Password" {
+output "AdminPassword" {
   value = "${module.ad.AdminPassword}"
 }
