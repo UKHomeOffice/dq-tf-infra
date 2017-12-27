@@ -14,6 +14,20 @@ module "apps" {
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
 
+  s3_bucket_name = {
+    archive_log  = "s3-dq-log-archive-bucket-preprod"
+    archive_data = "s3-dq-data-archive-bucket-preprod"
+    working_data = "s3-dq-data-working-bucket-preprod"
+    landing_data = "s3-dq-data-landing-bucket-preprod"
+  }
+
+  s3_bucket_acl = {
+    archive_log  = "private"
+    archive_data = "private"
+    working_data = "private"
+    landing_data = "private"
+  }
+
   vpc_peering_connection_ids = {
     peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
     peering_to_ops     = "${aws_vpc_peering_connection.apps_to_ops.id}"
