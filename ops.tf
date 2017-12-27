@@ -29,6 +29,7 @@ module "ops" {
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   adminpassword                   = "${module.ad.AdminPassword}"
+  log_archive_s3_bucket           = "${module.apps.log_archive_bucket_id}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
