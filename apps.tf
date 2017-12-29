@@ -22,7 +22,7 @@ module "apps" {
   }
 
   s3_bucket_acl = {
-    archive_log  = "private"
+    archive_log  = "log-delivery-write"
     archive_data = "private"
     working_data = "private"
     landing_data = "private"
