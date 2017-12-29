@@ -1,4 +1,4 @@
-# DQ Terraform MOCK ACP module
+# DQ Terraform Infra
 
 [![Build Status](https://drone.digital.homeoffice.gov.uk/api/badges/UKHomeOffice/dq-tf-infra/status.svg)](https://drone.digital.homeoffice.gov.uk/UKHomeOffice/dq-tf-infra)
 
