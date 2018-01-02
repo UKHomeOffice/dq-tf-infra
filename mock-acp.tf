@@ -20,12 +20,20 @@ module "mock-acp" {
     ops_win_tester_ip   = "10.2.0.12"
     ops_linux_tester_ip = "10.2.0.11"
     peering_tester_ip   = "10.3.2.11"
+    ext_tableau         = "10.3.0.11"
+    int_tableau         = "10.3.0.11"
+    gp_master           = "10.3.0.11"
+    bdm_web             = "10.3.0.11"
   }
 
   tester_ports = {
     ops_rdp_port      = "3389"
     ops_ssh_port      = "22"
     peering_http_port = "80"
+    ext_tableau_port  = "1025"
+    int_tableau_port  = "1026"
+    gp_master_port    = "1027"
+    bdm_web_port      = "1028"
   }
 
   acp_private_ips = {
