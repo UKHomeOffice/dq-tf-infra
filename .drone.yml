@@ -55,7 +55,7 @@ pipeline:
       - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
       - terragrunt init -reconfigure
     environment:
-      - NAMESPACE=prod
+      - TF_VAR_NAMESPACE=prod
     when:
       event: [deployment, push]
 
@@ -78,6 +78,6 @@ pipeline:
       - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
       - terragrunt apply -auto-approve
     environment:
-      - NAMESPACE=prod
+      - TF_VAR_NAMESPACE=prod
     when:
       event: deployment
