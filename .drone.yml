@@ -27,7 +27,7 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
-      - terragrunt plan -lock=false
+      - terragrunt plan -lock=false -out=plan
 
   graph-notprod:
     image: chrisns/docker-terragrunt
@@ -43,12 +43,12 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
-      - terragrunt apply -auto-approve
+      - terragrunt apply -auto-approve -parallelism=50 plan
     when:
       branch: master
 
 ## production
-  init:
+  init-prod:
     image: chrisns/docker-terragrunt
     commands:
       - export TF_VAR_APPS_ID=${PROD_ACC_ID}
@@ -59,7 +59,7 @@ pipeline:
     when:
       event: [deployment, push]
 
-  plan:
+  plan-prod:
     image: chrisns/docker-terragrunt
     commands:
       - export TF_VAR_APPS_ID=${PROD_ACC_ID}
