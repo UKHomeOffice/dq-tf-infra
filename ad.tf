@@ -32,24 +32,24 @@ resource "aws_kms_key" "ad_passwords_key" {
   deletion_window_in_days = 30
 
   policy = <<EOF
-  {
-  "Version": "2012-10-17",
-  "Id": "key-default-1",
-  "Statement": [
-    {
-      "Sid": "Enable IAM User Permissions",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-          "${data.aws_caller_identity.ci.account_id}",
-          "${data.aws_caller_identity.mocks.account_id}",
-          "${data.aws_caller_identity.apps.account_id}"
-        ]
-      },
-      "Action": "kms:*",
-      "Resource": "*"
-    }
-  ]
+{
+    "Version": "2012-10-17",
+    "Id": "key-default-1",
+    "Statement": [
+      {
+        "Sid": "Enable IAM User Permissions",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+            "${data.aws_caller_identity.ci.account_id}",
+            "${data.aws_caller_identity.mocks.account_id}",
+            "${data.aws_caller_identity.apps.account_id}"
+          ]
+        },
+        "Action": "kms:*",
+        "Resource": "*"
+      }
+   ]
 }
 EOF
 }
