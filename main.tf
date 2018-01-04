@@ -2,6 +2,10 @@ terraform {
   backend "s3" {}
 }
 
+locals {
+  naming_suffix = "${var.NAMESPACE}-dq"
+}
+
 provider "aws" {
   region = "eu-west-2"
 }
