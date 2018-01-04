@@ -5,6 +5,7 @@ module "ops" {
     aws = "aws.APPS"
   }
 
+  naming_suffix                   = "${local.naming_suffix}"
   cidr_block                      = "10.2.0.0/16"
   vpc_subnet_cidr_block           = "10.2.0.0/24"
   public_subnet_cidr_block        = "10.2.2.0/24"
