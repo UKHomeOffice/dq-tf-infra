@@ -9,4 +9,6 @@ variable "MOCK_KEY" {}
 variable "APPS_ID" {}
 variable "APPS_KEY" {}
 
-variable "NAMESPACE" {}
+variable "NAMESPACE" {
+  default = "notprod"
+}
