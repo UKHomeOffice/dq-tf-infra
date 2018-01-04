@@ -27,35 +27,8 @@ module "ad" {
   }
 }
 
-resource "aws_kms_key" "ad_joiner_account_key" {
-  description             = "KMS key for AD Joiner account"
-  deletion_window_in_days = 30
-
-  policy = <<EOF
-  {
-  "Version": "2012-10-17",
-  "Id": "key-default-1",
-  "Statement": [
-    {
-      "Sid": "Enable IAM User Permissions",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-          "${data.aws_caller_identity.ci.account_id}",
-          "${data.aws_caller_identity.mocks.account_id}",
-          "${data.aws_caller_identity.apps.account_id}"
-        ]
-      },
-      "Action": "kms:*",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_kms_key" "ad_admin_account_key" {
-  description             = "KMS key for AD admin account"
+resource "aws_kms_key" "ad_passwords_key" {
+  description             = "KMS key to store AD passwords"
   deletion_window_in_days = 30
 
   policy = <<EOF
