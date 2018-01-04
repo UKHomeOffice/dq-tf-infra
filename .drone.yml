@@ -51,9 +51,20 @@ pipeline:
   init:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
       - terragrunt init -reconfigure
+    environment:
+      - NAMESPACE=prod
+    when:
+      event: [deployment, push]
+
+  plan:
+    image: chrisns/docker-terragrunt
+    commands:
+      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
+      - terragrunt plan -lock=false
     environment:
       - NAMESPACE=prod
     when:
@@ -63,8 +74,8 @@ pipeline:
     image: chrisns/docker-terragrunt
     pull: true
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
       - terragrunt apply -auto-approve
     environment:
       - NAMESPACE=prod
