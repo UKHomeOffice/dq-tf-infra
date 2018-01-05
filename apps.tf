@@ -46,7 +46,7 @@ module "apps" {
     "${module.peering.peeringvpc_cidr_block}",
     "${module.ops.opsvpc_cidr_block}",
     "${module.ad.cidr_block}",
-    "${module.apps.appsvpc_cidr_block}",
+    "10.1.0.0/16",
   ]
 }
 
