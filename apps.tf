@@ -13,6 +13,7 @@ module "apps" {
   adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
+  naming_suffix                   = "${local.naming_suffix}"
 
   s3_bucket_name = {
     archive_log  = "s3-dq-log-archive-bucket-preprod"
