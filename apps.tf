@@ -41,6 +41,13 @@ module "apps" {
     acp_ops      = "${module.mock-acp.acpops_cidr_block}"
     acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
   }
+
+  ad_sg_cidr_ingress = [
+    "${module.peering.peeringvpc_cidr_block}",
+    "${module.ops.opsvpc_cidr_block}",
+    "${module.ad.cidr_block}",
+    "${module.apps.appsvpc_cidr_block}",
+  ]
 }
 
 output "appsvpc_id" {
