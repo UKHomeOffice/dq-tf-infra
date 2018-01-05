@@ -10,7 +10,7 @@ module "apps" {
   ad_subnet_cidr_block            = "10.1.16.0/24"
   az                              = "eu-west-2a"
   name_prefix                     = "dq-"
-  adminpassword                   = "${module.ad.AdminPassword}"
+  adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   naming_suffix                   = "${local.naming_suffix}"
