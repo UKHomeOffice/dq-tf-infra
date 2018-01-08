@@ -16,10 +16,10 @@ module "apps" {
   naming_suffix                   = "${local.naming_suffix}"
 
   s3_bucket_name = {
-    archive_log  = "s3-dq-log-archive-bucket-preprod"
-    archive_data = "s3-dq-data-archive-bucket-preprod"
-    working_data = "s3-dq-data-working-bucket-preprod"
-    landing_data = "s3-dq-data-landing-bucket-preprod"
+    archive_log  = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
+    archive_data = "s3-dq-data-archive-bucket-${var.NAMESPACE}"
+    working_data = "s3-dq-data-working-bucket-${var.NAMESPACE}"
+    landing_data = "s3-dq-data-landing-bucket-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
