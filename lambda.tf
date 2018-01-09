@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 resource "aws_iam_role" "cloudwatch_lambda_role" {
   name = "cloudwatch_lambda_role"
   assume_role_policy = <<EOF
@@ -77,13 +75,12 @@ resource "aws_lambda_function" "cloud_init_export" {
 resource "aws_lambda_permission" "cloud_init" {
     statement_id   = "AllowExecutionFromCloudWatch"
     action         = "lambda:InvokeFunction"
-    function_name  = "${aws_lambda_function.cloud_init_export_task.function_name}"
+    function_name  = "${aws_lambda_function.cloud_init_export.function_name}"
     principal      = "logs.amazonaws.com"
-    source_account = "${data.aws_caller_identity.current.account_id}"
     source_arn     = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
 }
 
-resource "aws_lambda_function" "cloud_init__output_export" {
+resource "aws_lambda_function" "cloud_init_output_export" {
     filename      = "deployment.zip"
     function_name = "cloud_init_output_export_task"
     role          = "${aws_iam_role.cloudwatch_lambda_role.arn}"
@@ -91,12 +88,11 @@ resource "aws_lambda_function" "cloud_init__output_export" {
     runtime       = "python3.6"
 }
 
-resource "aws_lambda_permission" "cloud_init_export" {
+resource "aws_lambda_permission" "cloud_init_output_export" {
     statement_id   = "AllowExecutionFromCloudWatch"
     action         = "lambda:InvokeFunction"
-    function_name  = "${aws_lambda_function.cloud_init_output_export_task.function_name}"
+    function_name  = "${aws_lambda_function.cloud_init_output_export.function_name}"
     principal      = "logs.amazonaws.com"
-    source_account = "${data.aws_caller_identity.current.account_id}"
     source_arn     = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
 }
 
@@ -111,8 +107,7 @@ resource "aws_lambda_function" "system_export" {
 resource "aws_lambda_permission" "system" {
     statement_id   = "AllowExecutionFromCloudWatch"
     action         = "lambda:InvokeFunction"
-    function_name  = "${aws_lambda_function.system_export_task.function_name}"
+    function_name  = "${aws_lambda_function.system_export.function_name}"
     principal      = "logs.amazonaws.com"
-    source_account = "${data.aws_caller_identity.current.account_id}"
     source_arn     = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
 }
