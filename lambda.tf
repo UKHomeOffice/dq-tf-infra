@@ -22,26 +22,26 @@ resource "aws_iam_role_policy" "lambda_to_cloudwatch_and_s3" {
   role = "${aws_iam_role.cloudwatch_lambda_role.id}"
 
   policy = <<EOF
-  {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Effect": "Allow",
-              "Action": [
-                  "logs:*"
-              ],
-              "Resource": "arn:aws:logs:*:*:*"
-          },
-          {
-              "Effect": "Allow",
-              "Action": [
-                  "s3:GetObject",
-                  "s3:PutObject"
-              ],
-              "Resource": "${module.apps.log_archive_bucket_arn}"
-          }
-      ]
-  }
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "logs:*"
+      ],
+      "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+          "s3:GetObject",
+          "s3:PutObject"
+      ],
+      "Resource": "${module.apps.log_archive_bucket_arn}"
+    }
+  ]
+}
 EOF
 }
 
