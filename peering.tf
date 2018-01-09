@@ -15,7 +15,7 @@ module "peering" {
   s3_bucket_acl                         = "private"
   log_archive_s3_bucket                 = "${module.apps.log_archive_bucket_id}"
   az                                    = "eu-west-2a"
-  name_prefix                           = "dq-"
+  naming_suffix                         = "${local.naming_suffix}"
 
   route_table_cidr_blocks = {
     ops_cidr  = "${module.ops.opsvpc_cidr_block}"
