@@ -91,7 +91,7 @@ resource "aws_lambda_permission" "cloud_init" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.cloud_init_export.function_name}"
   principal     = "logs.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.cloud_init.arn}"
 }
 
 resource "aws_lambda_function" "cloud_init_output_export" {
@@ -107,7 +107,7 @@ resource "aws_lambda_permission" "cloud_init_output_export" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.cloud_init_output_export.function_name}"
   principal     = "logs.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.cloud_init_output.arn}"
 }
 
 resource "aws_lambda_function" "system_export" {
@@ -123,5 +123,5 @@ resource "aws_lambda_permission" "system" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.system_export.function_name}"
   principal     = "logs.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_24_hours.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.system.arn}"
 }
