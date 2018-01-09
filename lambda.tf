@@ -45,24 +45,36 @@ resource "aws_iam_role_policy" "lambda_to_cloudwatch_and_s3" {
 EOF
 }
 
-resource "aws_cloudwatch_event_rule" "every_24_hours" {
+resource "aws_cloudwatch_event_rule" "cloud_init" {
   name                = "every_24_hours"
   description         = "Runs every 24 hours."
-  schedule_expression = "rate(24 hours)"
+  schedule_expression = "cron(0 9 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_rule" "cloud_init_output" {
+  name                = "every_24_hours"
+  description         = "Runs every 24 hours."
+  schedule_expression = "cron(5 9 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_rule" "system" {
+  name                = "every_24_hours"
+  description         = "Runs every 24 hours."
+  schedule_expression = "cron(10 9 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "cloud_init" {
-  rule = "${aws_cloudwatch_event_rule.every_24_hours.name}"
+  rule = "${aws_cloudwatch_event_rule.cloud_init.name}"
   arn  = "${aws_lambda_function.cloud_init_export.arn}"
 }
 
 resource "aws_cloudwatch_event_target" "cloud_init_output" {
-  rule = "${aws_cloudwatch_event_rule.every_24_hours.name}"
+  rule = "${aws_cloudwatch_event_rule.cloud_init_output.name}"
   arn  = "${aws_lambda_function.cloud_init_output_export.arn}"
 }
 
 resource "aws_cloudwatch_event_target" "system" {
-  rule = "${aws_cloudwatch_event_rule.every_24_hours.name}"
+  rule = "${aws_cloudwatch_event_rule.system.name}"
   arn  = "${aws_lambda_function.system_export.arn}"
 }
 
