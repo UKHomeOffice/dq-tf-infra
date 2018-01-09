@@ -14,7 +14,7 @@ module "mock-acp" {
   acpcicd_cidr_block            = "10.7.0.0/16"
   acpcicd_vpc_subnet_cidr_block = "10.7.1.0/24"
   az                            = "eu-west-2a"
-  name_prefix                   = "dq-"
+  naming_suffix                 = "${local.naming_suffix}"
 
   tester_ips = {
     ops_win_tester_ip   = "10.2.0.12"
