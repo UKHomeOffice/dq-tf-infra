@@ -1,3 +1,7 @@
+locals {
+  vpc_peering_naming_suffix = "vpc-peering-${local.naming_suffix}"
+}
+
 resource "aws_vpc_peering_connection" "peering_to_apps" {
   provider      = "aws.APPS"
   vpc_id        = "${module.peering.peeringvpc_id}"
@@ -14,7 +18,7 @@ resource "aws_vpc_peering_connection" "peering_to_apps" {
   }
 
   tags {
-    Name = "Peering and Apps"
+    Name = "peering-to-apps-${local.vpc_peering_naming_suffix}"
   }
 }
 
@@ -34,7 +38,7 @@ resource "aws_vpc_peering_connection" "peering_to_ops" {
   }
 
   tags {
-    Name = "Peering and Ops"
+    Name = "peering-to-ops-${local.vpc_peering_naming_suffix}"
   }
 }
 
@@ -54,7 +58,7 @@ resource "aws_vpc_peering_connection" "apps_to_ops" {
   }
 
   tags {
-    Name = "Apps and Ops"
+    Name = "apps-to-ops-${local.vpc_peering_naming_suffix}"
   }
 }
 
