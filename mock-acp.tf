@@ -23,7 +23,6 @@ module "mock-acp" {
     ext_tableau         = "10.3.0.11"
     int_tableau         = "10.3.0.11"
     gp_master           = "10.3.0.11"
-    bdm_web             = "10.3.0.11"
   }
 
   tester_ports = {
@@ -33,7 +32,6 @@ module "mock-acp" {
     ext_tableau_port  = "1025"
     int_tableau_port  = "1026"
     gp_master_port    = "1027"
-    bdm_web_port      = "1028"
   }
 
   acp_private_ips = {
