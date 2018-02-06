@@ -63,10 +63,11 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
-      - terragrunt plan -lock=false
+      - terragrunt plan -lock=false -out=prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
+      environment: prod
       event: [deployment, push]
 
   apply-prod:
@@ -74,8 +75,9 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
-      - terragrunt apply -auto-approve
+      - terragrunt apply -auto-approve -parallelism=50 prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
+      environment: prod
       event: deployment
