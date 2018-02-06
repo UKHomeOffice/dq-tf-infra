@@ -12,6 +12,9 @@ pipeline:
     privileged: true
     pull: true
     commands: run
+    when:
+      branch:
+        exclude: [ master ]
 
   validate:
     image: chrisns/docker-terragrunt
@@ -20,6 +23,9 @@ pipeline:
       - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
       - terragrunt validate
+    when:
+      branch:
+        exclude: [ master ]
 
   plan-notprod:
     image: chrisns/docker-terragrunt
@@ -30,14 +36,6 @@ pipeline:
       - terragrunt plan -lock=false -out=plan
     when:
       event: push
-
-#  graph-notprod:
-#    image: chrisns/docker-terragrunt
-#    pull: true
-#    commands:
-#      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-#      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
-#      - terragrunt graph
 
   apply-notprod:
     image: chrisns/docker-terragrunt
