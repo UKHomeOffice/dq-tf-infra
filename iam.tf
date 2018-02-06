@@ -1,6 +1,7 @@
 resource "aws_iam_role_policy" "write_to_cw" {
-  role  = "${element(module.apps.iam_roles, count.index)}"
-  count = "${length(module.apps.iam_roles)}"
+  role     = "${element(module.apps.iam_roles, count.index)}"
+  count    = "${length(module.apps.iam_roles)}"
+  provider = "aws.APPS"
 
   policy = <<EOF
 {
