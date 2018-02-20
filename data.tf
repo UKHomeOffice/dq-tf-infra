@@ -14,6 +14,22 @@ data "aws_vpc_peering_connection" "ad_peering" {
   peer_owner_id = "${data.aws_caller_identity.apps.account_id}"
 }
 
+data "aws_vpc_peering_connection" "ops_to_acpvpn" {
+  provider = "aws.APPS"
+
+  tags {
+    Name = "ops-to-vpn"
+  }
+}
+
+data "aws_vpc_peering_connection" "peering_to_acp" {
+  provider = "aws.APPS"
+
+  tags {
+    Name = "peering-to-acp"
+  }
+}
+
 data "aws_caller_identity" "apps" {
   provider = "aws.APPS"
 }

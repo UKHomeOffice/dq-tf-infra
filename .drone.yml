@@ -67,7 +67,6 @@ pipeline:
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
-      environment: prod
       event: [deployment, push]
 
   apply-prod:

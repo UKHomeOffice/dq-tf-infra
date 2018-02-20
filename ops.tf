@@ -30,16 +30,13 @@ module "ops" {
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
     ops_and_peering = "${aws_vpc_peering_connection.peering_to_ops.id}"
-    ops_and_acpvpn  = "${module.ops_to_acpvpn.peering_id}"
+    ops_and_acpvpn  = "${data.aws_vpc_peering_connection.ops_to_acpvpn.id}"
   }
 
   route_table_cidr_blocks = {
     peering_cidr = "${module.peering.peeringvpc_cidr_block}"
     apps_cidr    = "${module.apps.appsvpc_cidr_block}"
-    acp_vpn      = "${module.mock-acp.acpvpn_cidr_block}"
-    acp_prod     = "${module.mock-acp.acpprod_cidr_block}"
-    acp_ops      = "${module.mock-acp.acpops_cidr_block}"
-    acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
+    acp_vpn      = "${data.aws_vpc_peering_connection.ops_to_acpvpn.cidr_block}"
   }
 
   ad_sg_cidr_ingress = [
