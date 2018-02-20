@@ -20,28 +20,20 @@ module "peering" {
   route_table_cidr_blocks = {
     ops_cidr  = "${module.ops.opsvpc_cidr_block}"
     apps_cidr = "${module.apps.appsvpc_cidr_block}"
-    acp_vpn   = "${module.mock-acp.acpvpn_cidr_block}"
-    acp_prod  = "${module.mock-acp.acpprod_cidr_block}"
-    acp_ops   = "${module.mock-acp.acpops_cidr_block}"
-    acp_cicd  = "${module.mock-acp.acpcicd_cidr_block}"
+    acp_prod  = "${data.aws_vpc_peering_connection.peering_to_acp.cidr_block}"
   }
 
   vpc_peering_connection_ids = {
     peering_and_apps    = "${aws_vpc_peering_connection.peering_to_apps.id}"
     peering_and_ops     = "${aws_vpc_peering_connection.peering_to_ops.id}"
-    peering_and_acpprod = "${module.peering_to_acpprod.peering_id}"
-    peering_and_acpops  = "${module.peering_to_acpops.peering_id}"
-    peering_and_acpcicd = "${module.peering_to_acpcicd.peering_id}"
+    peering_and_acpprod = "${data.aws_vpc_peering_connection.peering_to_acp.id}"
   }
 
   SGCIDRs = [
     "10.3.0.0/16",
     "${module.apps.appsvpc_cidr_block}",
     "${module.ops.opsvpc_cidr_block}",
-    "${module.mock-acp.acpvpn_cidr_block}",
-    "${module.mock-acp.acpprod_cidr_block}",
-    "${module.mock-acp.acpops_cidr_block}",
-    "${module.mock-acp.acpcicd_cidr_block}",
+    "${data.aws_vpc_peering_connection.peering_to_acp.cidr_block}",
   ]
 }
 

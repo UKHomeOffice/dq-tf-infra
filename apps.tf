@@ -37,10 +37,6 @@ module "apps" {
   route_table_cidr_blocks = {
     peering_cidr = "${module.peering.peeringvpc_cidr_block}"
     ops_cidr     = "${module.ops.opsvpc_cidr_block}"
-    acp_vpn      = "${module.mock-acp.acpvpn_cidr_block}"
-    acp_prod     = "${module.mock-acp.acpprod_cidr_block}"
-    acp_ops      = "${module.mock-acp.acpops_cidr_block}"
-    acp_cicd     = "${module.mock-acp.acpcicd_cidr_block}"
   }
 
   ad_sg_cidr_ingress = [
