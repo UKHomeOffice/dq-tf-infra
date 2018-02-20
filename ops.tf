@@ -6,13 +6,13 @@ module "ops" {
   }
 
   naming_suffix                   = "${local.naming_suffix}"
-  cidr_block                      = "10.2.0.0/16"
-  vpc_subnet_cidr_block           = "10.2.0.0/24"
-  public_subnet_cidr_block        = "10.2.2.0/24"
-  ad_subnet_cidr_block            = "10.2.4.0/24"
+  cidr_block                      = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16"
+  vpc_subnet_cidr_block           = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/24"
+  public_subnet_cidr_block        = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.0/24"
+  ad_subnet_cidr_block            = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.4.0/24"
   az                              = "eu-west-2a"
-  bastion_linux_ip                = "10.2.0.11"
-  bastion_windows_ip              = "10.2.0.12"
+  bastion_linux_ip                = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
+  bastion_windows_ip              = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12"
   INT_EXT_TABLEAU_RDP_TCP         = "3389"
   INT_EXT_TABLEAU_HTTPS_TCP       = "443"
   data_pipeline_RDP_TCP           = "3389"
@@ -46,7 +46,7 @@ module "ops" {
     "${module.peering.peeringvpc_cidr_block}",
     "${module.apps.appsvpc_cidr_block}",
     "${module.ad.cidr_block}",
-    "10.2.0.0/16",
+    "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16",
   ]
 }
 
