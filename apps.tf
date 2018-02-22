@@ -7,7 +7,6 @@ module "apps" {
 
   cidr_block                      = "10.1.0.0/16"
   public_subnet_cidr_block        = "10.1.0.0/24"
-  ad_subnet_cidr_block            = "10.1.16.0/24"
   az                              = "eu-west-2a"
   az2                             = "eu-west-2b"
   adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
