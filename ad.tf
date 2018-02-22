@@ -14,9 +14,12 @@ module "ad" {
   allow_remote_vpc_dns_resolution = false
   peer_count                      = 2
 
-  subnets = []
+  subnets = [
+    "${module.ops.ad_subnet_id}",
+    "${module.apps.ad_subnet_id}",
+  ]
 
-  subnet_count = 0
+  subnet_count = 2
 
   Domain = {
     address     = "dq.homeoffice.gov.uk"

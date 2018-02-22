@@ -9,6 +9,7 @@ module "ops" {
   cidr_block                      = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16"
   vpc_subnet_cidr_block           = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/24"
   public_subnet_cidr_block        = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.0/24"
+  ad_subnet_cidr_block            = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.4.0/24"
   az                              = "eu-west-2a"
   bastion_linux_ip                = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
   bastion_windows_ip              = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12"
