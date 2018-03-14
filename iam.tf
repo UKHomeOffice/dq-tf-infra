@@ -26,7 +26,10 @@ resource "aws_iam_role_policy" "write_to_cw" {
     },
     {
         "Effect": "Allow",
-        "Action": "ec2:DescribeTags",
+        "Action": [
+          "ec2:DescribeTags",
+          "ec2:DescribeInstances"
+      ],    
         "Resource": "*"
     },
     {
