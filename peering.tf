@@ -5,15 +5,15 @@ module "peering" {
     aws = "aws.APPS"
   }
 
-  cidr_block                            = "10.3.0.0/16"
-  haproxy_subnet_cidr_block             = "10.3.0.0/24"
-  public_subnet_cidr_block              = "10.3.3.0/24"
-  haproxy_private_ip                    = "10.3.0.11"
-  s3_bucket_name                        = "s3-dq-peering-haproxy-config-bucket-${var.NAMESPACE}"
-  s3_bucket_acl                         = "private"
-  log_archive_s3_bucket                 = "${module.apps.log_archive_bucket_id}"
-  az                                    = "eu-west-2a"
-  naming_suffix                         = "${local.naming_suffix}"
+  cidr_block                = "10.3.0.0/16"
+  haproxy_subnet_cidr_block = "10.3.0.0/24"
+  public_subnet_cidr_block  = "10.3.3.0/24"
+  haproxy_private_ip        = "10.3.0.11"
+  s3_bucket_name            = "s3-dq-peering-haproxy-config-bucket-${var.NAMESPACE}"
+  s3_bucket_acl             = "private"
+  log_archive_s3_bucket     = "${module.apps.log_archive_bucket_id}"
+  az                        = "eu-west-2a"
+  naming_suffix             = "${local.naming_suffix}"
 
   route_table_cidr_blocks = {
     ops_cidr  = "${module.ops.opsvpc_cidr_block}"
