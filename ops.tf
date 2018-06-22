@@ -14,7 +14,7 @@ module "ops" {
   bastion_linux_ip                = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
   bastion_windows_ip              = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12"
   bastion2_windows_ip             = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13"
-  management_access               = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
+  management_access               = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11/32"
   analysis_instance_ip            = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.8"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
