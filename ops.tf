@@ -18,6 +18,7 @@ module "ops" {
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
   log_archive_s3_bucket           = "${module.apps.log_archive_bucket_id}"
+  s3_bucket_name                  = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
