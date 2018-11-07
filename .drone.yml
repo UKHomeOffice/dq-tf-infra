@@ -4,9 +4,14 @@ pipeline:
     image: chrisns/docker-terragrunt
     pull: true
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - terragrunt init
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
 
   testsuite:
     image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
@@ -14,68 +19,103 @@ pipeline:
     when:
       branch:
         exclude: [ master ]
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
 
   validate:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - terragrunt validate
     when:
       branch:
         exclude: [ master ]
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY      
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
 
   plan-notprod:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - terragrunt plan -lock=false -out=plan
     when:
       event: push
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
 
   apply-notprod:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${NOTPROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${NOTPROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - terragrunt apply -auto-approve -parallelism=50 plan
     when:
       branch: master
       event: push
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
 
 
 ## production
   init-prod:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
       - terragrunt init -reconfigure
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
       event: [deployment, push]
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - PROD_ACC_ID
+      - PROD_ACC_KEY
 
   plan-prod:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
       - terragrunt plan -lock=false -out=prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
       event: [deployment, push]
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - PROD_ACC_ID
+      - PROD_ACC_KEY
 
   apply-prod:
     image: chrisns/docker-terragrunt
     commands:
-      - export TF_VAR_APPS_ID=${PROD_ACC_ID}
-      - export TF_VAR_APPS_KEY=${PROD_ACC_KEY}
+      - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
       - terragrunt apply -auto-approve -parallelism=50 prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
     when:
       environment: prod
       event: deployment
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - PROD_ACC_ID
+      - PROD_ACC_KEY
