@@ -35,19 +35,21 @@ pipeline:
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - export MOCK_ID=$${TF_VAR_MOCK_ID}
       - export MOCK_KEY=$${TF_VAR_MOCK_KEY}
-      - export CI_ID=$${AWS_ACCESS_KEY_ID}
-      - export CI_KEY=$${AWS_SECRET_ACCESS_KEY}
+      - export CI_ID=$${TF_VAR_CI_CD}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
       - terragrunt validate
     when:
       branch:
         exclude: [ master ]
     secrets:
+      - TF_VAR_CI_CD
+      - TF_VAR_CI_KEY
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
       - NOTPROD_ACC_KEY
       - TF_VAR_MOCK_ID
-      - TF_VAR_MOCK_KEY  
+      - TF_VAR_MOCK_KEY
 
   plan-notprod:
     image: chrisns/docker-terragrunt
