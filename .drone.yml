@@ -14,8 +14,11 @@ pipeline:
       - NOTPROD_ACC_KEY
 
   testsuite:
-    image: quay.io/ukhomeofficedigital/dq-tf-testsuite:latest
-    commands: run
+    image: docker:18.05
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
     when:
       branch:
         exclude: [ master ]
@@ -36,7 +39,7 @@ pipeline:
         exclude: [ master ]
     secrets:
       - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY      
+      - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
       - NOTPROD_ACC_KEY
 
