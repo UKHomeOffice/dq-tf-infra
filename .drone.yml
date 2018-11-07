@@ -119,6 +119,10 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+      - export MOCK_ID=$${TF_VAR_MOCK_ID}
+      - export MOCK_KEY=$${TF_VAR_MOCK_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
       - terragrunt plan -lock=false -out=prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
@@ -129,12 +133,21 @@ pipeline:
       - AWS_SECRET_ACCESS_KEY
       - PROD_ACC_ID
       - PROD_ACC_KEY
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
+      - TF_VAR_MOCK_ID
+      - TF_VAR_MOCK_KEY
+
 
   apply-prod:
     image: chrisns/docker-terragrunt
     commands:
       - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+      - export MOCK_ID=$${TF_VAR_MOCK_ID}
+      - export MOCK_KEY=$${TF_VAR_MOCK_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}      
       - terragrunt apply -auto-approve -parallelism=50 prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
@@ -146,3 +159,7 @@ pipeline:
       - AWS_SECRET_ACCESS_KEY
       - PROD_ACC_ID
       - PROD_ACC_KEY
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
+      - TF_VAR_MOCK_ID
+      - TF_VAR_MOCK_KEY
