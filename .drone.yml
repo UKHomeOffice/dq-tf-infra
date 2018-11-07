@@ -58,12 +58,14 @@ pipeline:
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - export MOCK_ID=$${TF_VAR_MOCK_ID}
       - export MOCK_KEY=$${TF_VAR_MOCK_KEY}
-      - export CI_ID=$${AWS_ACCESS_KEY_ID}
-      - export CI_KEY=$${AWS_SECRET_ACCESS_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
       - terragrunt plan -lock=false -out=plan
     when:
       event: push
     secrets:
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
@@ -78,13 +80,15 @@ pipeline:
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - export MOCK_ID=$${TF_VAR_MOCK_ID}
       - export MOCK_KEY=$${TF_VAR_MOCK_KEY}
-      - export CI_ID=$${AWS_ACCESS_KEY_ID}
-      - export CI_KEY=$${AWS_SECRET_ACCESS_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
       - terragrunt apply -auto-approve -parallelism=50 plan
     when:
       branch: master
       event: push
     secrets:
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
