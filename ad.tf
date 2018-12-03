@@ -53,7 +53,3 @@ resource "aws_kms_key" "ad_passwords_key" {
 }
 EOF
 }
-
-output "AdminPassword" {
-  value = "${module.ad.AdminPassword}"
-}

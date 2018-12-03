@@ -41,15 +41,3 @@ module "ops" {
     "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16",
   ]
 }
-
-output "opsvpc_id" {
-  value = "${module.ops.opsvpc_id}"
-}
-
-output "opsvpc_cidr_block" {
-  value = "${module.ops.opsvpc_cidr_block}"
-}
-
-output "opssubnet_cidr_block" {
-  value = "${module.ops.opssubnet_cidr_block}"
-}
