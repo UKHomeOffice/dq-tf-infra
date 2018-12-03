@@ -46,11 +46,3 @@ module "apps" {
     "10.1.0.0/16",
   ]
 }
-
-output "appsvpc_id" {
-  value = "${module.apps.appsvpc_id}"
-}
-
-output "appsvpc_cidr_block" {
-  value = "${module.apps.appsvpc_cidr_block}"
-}

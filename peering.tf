@@ -34,7 +34,3 @@ module "peering" {
     "${data.aws_vpc_peering_connection.peering_to_acp.cidr_block}",
   ]
 }
-
-output "peeringvpc_id" {
-  value = "${module.peering.peeringvpc_id}"
-}
