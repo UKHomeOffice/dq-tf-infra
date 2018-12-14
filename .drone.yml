@@ -53,6 +53,7 @@ pipeline:
 
   plan-notprod:
     image: chrisns/docker-terragrunt
+    pull: true
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
@@ -71,6 +72,7 @@ pipeline:
 
   apply-notprod:
     image: chrisns/docker-terragrunt
+    pull: true
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
@@ -108,6 +110,7 @@ pipeline:
 
   plan-prod:
     image: chrisns/docker-terragrunt
+    pull: true
     commands:
       - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
@@ -128,6 +131,7 @@ pipeline:
 
   apply-prod:
     image: chrisns/docker-terragrunt
+    pull: true
     commands:
       - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
