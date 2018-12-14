@@ -28,10 +28,6 @@ Controls resources in the AD VPC.
 
 Controls resources in the Apps VPC.
 
-### mock-acp.tf
-
-Controls resources in the Mock ACP VPC.
-
 ### ops.tf
 
 Controls resources in the Ops VPC.

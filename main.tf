@@ -19,13 +19,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias      = "MOCK"
-  region     = "eu-west-2"
-  access_key = "${var.MOCK_ID}"
-  secret_key = "${var.MOCK_KEY}"
-}
-
-provider "aws" {
   alias      = "APPS"
   region     = "eu-west-2"
   access_key = "${var.APPS_ID}"

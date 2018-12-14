@@ -34,10 +34,6 @@ data "aws_caller_identity" "apps" {
   provider = "aws.APPS"
 }
 
-data "aws_caller_identity" "mocks" {
-  provider = "aws.MOCK"
-}
-
 data "aws_caller_identity" "ci" {
   provider = "aws.CI"
 }
