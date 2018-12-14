@@ -42,7 +42,6 @@ resource "aws_kms_key" "ad_passwords_key" {
       "Principal": {
         "AWS": [
           "arn:aws:iam::${data.aws_caller_identity.ci.account_id}:root",
-          "arn:aws:iam::${data.aws_caller_identity.mocks.account_id}:root",
           "arn:aws:iam::${data.aws_caller_identity.apps.account_id}:root"
         ]
       },
