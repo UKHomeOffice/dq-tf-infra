@@ -22,9 +22,9 @@ module "apps" {
     archive_data      = "s3-dq-data-archive-bucket-${var.NAMESPACE}"
     working_data      = "s3-dq-data-working-bucket-${var.NAMESPACE}"
     landing_data      = "s3-dq-data-landing-bucket-${var.NAMESPACE}"
-    airports_archive  = "dq-airports-archive-${var.NAMESPACE}"
-    airports_internal = "dq-airports-internal-${var.NAMESPACE}"
-    airports_working  = "dq-airports-working-${var.NAMESPACE}"
+    airports_archive  = "s3-dq-airports-archive-${var.NAMESPACE}"
+    airports_internal = "s3-dq-airports-internal-${var.NAMESPACE}"
+    airports_working  = "s3-dq-airports-working-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
