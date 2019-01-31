@@ -18,17 +18,23 @@ module "apps" {
   naming_suffix                   = "${local.naming_suffix}"
 
   s3_bucket_name = {
-    archive_log  = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
-    archive_data = "s3-dq-data-archive-bucket-${var.NAMESPACE}"
-    working_data = "s3-dq-data-working-bucket-${var.NAMESPACE}"
-    landing_data = "s3-dq-data-landing-bucket-${var.NAMESPACE}"
+    archive_log       = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
+    archive_data      = "s3-dq-data-archive-bucket-${var.NAMESPACE}"
+    working_data      = "s3-dq-data-working-bucket-${var.NAMESPACE}"
+    landing_data      = "s3-dq-data-landing-bucket-${var.NAMESPACE}"
+    airports_archive  = "dq-airports-archive-${var.NAMESPACE}"
+    airports_internal = "dq-airports-internal-${var.NAMESPACE}"
+    airports_working  = "dq-airports-working-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
-    archive_log  = "log-delivery-write"
-    archive_data = "private"
-    working_data = "private"
-    landing_data = "private"
+    archive_log       = "log-delivery-write"
+    archive_data      = "private"
+    working_data      = "private"
+    landing_data      = "private"
+    airports_archive  = "private"
+    airports_internal = "private"
+    airports_working  = "private"
   }
 
   vpc_peering_connection_ids = {
