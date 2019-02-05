@@ -6,6 +6,8 @@ pipeline:
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
       - terragrunt init
     when:
       branch:
@@ -15,6 +17,7 @@ pipeline:
       - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
       - NOTPROD_ACC_KEY
+      - SSH_KEY
 
 
   testsuite:
