@@ -59,6 +59,8 @@ pipeline:
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
       - export CI_ID=$${TF_VAR_CI_ID}
       - export CI_KEY=$${TF_VAR_CI_KEY}
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
       - terragrunt plan -lock=false -out=plan
     when:
       event: push
@@ -69,6 +71,7 @@ pipeline:
       - AWS_SECRET_ACCESS_KEY
       - NOTPROD_ACC_ID
       - NOTPROD_ACC_KEY
+      - SSH_KEY
 
   apply-notprod:
     image: chrisns/docker-terragrunt
@@ -116,6 +119,8 @@ pipeline:
       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
       - export CI_ID=$${TF_VAR_CI_ID}
       - export CI_KEY=$${TF_VAR_CI_KEY}
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
       - terragrunt plan -lock=false -out=prodplan
     environment:
       - TF_VAR_NAMESPACE=prod
@@ -128,6 +133,7 @@ pipeline:
       - PROD_ACC_KEY
       - TF_VAR_CI_ID
       - TF_VAR_CI_KEY
+      - SSH_KEY
 
   apply-prod:
     image: chrisns/docker-terragrunt
