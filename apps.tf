@@ -25,6 +25,9 @@ module "apps" {
     airports_archive  = "s3-dq-airports-archive-${var.NAMESPACE}"
     airports_internal = "s3-dq-airports-internal-${var.NAMESPACE}"
     airports_working  = "s3-dq-airports-working-${var.NAMESPACE}"
+    oag_archive       = "s3-dq-oag-archive-${var.NAMESPACE}"
+    oag_internal      = "s3-dq-oag-internal-${var.NAMESPACE}"
+    oag_transform     = "s3-dq-oag-transform-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -35,6 +38,9 @@ module "apps" {
     airports_archive  = "private"
     airports_internal = "private"
     airports_working  = "private"
+    oag_archive       = "private"
+    oag_internal      = "private"
+    oag_transform     = "private"
   }
 
   vpc_peering_connection_ids = {
