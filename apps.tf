@@ -29,6 +29,8 @@ module "apps" {
     oag_archive       = "s3-dq-oag-archive-${var.NAMESPACE}"
     oag_internal      = "s3-dq-oag-internal-${var.NAMESPACE}"
     oag_transform     = "s3-dq-oag-transform-${var.NAMESPACE}"
+    acl_archive       = "s3-dq-acl-archive-${var.NAMESPACE}"
+    acl_internal      = "s3-dq-acl-internal-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -42,6 +44,8 @@ module "apps" {
     oag_archive       = "private"
     oag_internal      = "private"
     oag_transform     = "private"
+    acl_archive       = "private"
+    acl_internal      = "private"
   }
 
   vpc_peering_connection_ids = {
