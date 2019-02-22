@@ -38,6 +38,7 @@ module "apps" {
     api_internal             = "s3-dq-api-internal-${var.NAMESPACE}"
     api_record_level_scoring = "s3-dq-api-record-level-scoring-${var.NAMESPACE}"
     gait_internal            = "s3-dq-gait-internal-${var.NAMESPACE}"
+    cross_record_scored      = "s3-dq-cross-record-scored-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -60,6 +61,7 @@ module "apps" {
     api_internal             = "private"
     api_record_level_scoring = "private"
     gait_internal            = "private"
+    cross_record_scored      = "private"
   }
 
   vpc_peering_connection_ids = {
