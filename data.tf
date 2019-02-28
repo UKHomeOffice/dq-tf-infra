@@ -38,7 +38,7 @@ data "aws_caller_identity" "ci" {
   provider = "aws.CI"
 }
 
-data "aws_kms_secret" "ad_joiner_password" {
+data "aws_kms_secrets" "ad_joiner_password" {
   secret {
     name    = "ad_joiner_password"
     payload = "AQICAHhbM/ukRBb/Ya4cVR7Kqv0R4PfUfoNysP2u4BpIel0PVwHrIRsrc3RgFS47HkQEpFGIAAAAbjBsBgkqhkiG9w0BBwagXzBdAgEAMFgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMVB0fwYpQFnROpCbJAgEQgCvxRH6nYRagTHqOlgCUjldFyCxOc///2mVoAxNFFPp3+d7ZOtqqyjN3pTaB"
@@ -49,7 +49,7 @@ data "aws_kms_secret" "ad_joiner_password" {
   }
 }
 
-data "aws_kms_secret" "ad_admin_password" {
+data "aws_kms_secrets" "ad_admin_password" {
   secret {
     name    = "ad_admin_password"
     payload = "AQICAHhbM/ukRBb/Ya4cVR7Kqv0R4PfUfoNysP2u4BpIel0PVwEgo9lW1FCt6JnG/R5VFAKsAAAAbjBsBgkqhkiG9w0BBwagXzBdAgEAMFgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMSlbmCn+wejXdA1d0AgEQgCs5uNKKe38Zl9flh3hDGmLFUiqoOnJNGprDTbarqqGF4Gqv0uW8QmqaT502"
