@@ -19,7 +19,7 @@ module "ops" {
   analysis_instance_ip            = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.8"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
-  adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
+  adminpassword                   = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
   log_archive_s3_bucket           = "${module.apps.log_archive_bucket_id}"
   s3_bucket_name                  = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
 
