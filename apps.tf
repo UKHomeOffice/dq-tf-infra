@@ -12,7 +12,7 @@ module "apps" {
   haproxy_private_ip2             = "${module.peering.haproxy_private_ip2}"
   az                              = "eu-west-2a"
   az2                             = "eu-west-2b"
-  adminpassword                   = "${data.aws_kms_secret.ad_admin_password.ad_admin_password}"
+  adminpassword                   = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   naming_suffix                   = "${local.naming_suffix}"
