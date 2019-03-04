@@ -41,6 +41,7 @@ module "apps" {
     cross_record_scored        = "s3-dq-cross-record-scored-${var.NAMESPACE}"
     reporting_internal_working = "s3-dq-reporting-internal-working-${var.NAMESPACE}"
     mds_extract                = "s3-dq-mds-extract-${var.NAMESPACE}"
+    raw_file_index_internal    = "s3-dq-raw-file-index-internal-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -66,6 +67,7 @@ module "apps" {
     cross_record_scored        = "private"
     reporting_internal_working = "private"
     mds_extract                = "private"
+    raw_file_index_internal    = "private"
   }
 
   vpc_peering_connection_ids = {
