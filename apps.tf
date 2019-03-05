@@ -42,6 +42,7 @@ module "apps" {
     reporting_internal_working = "s3-dq-reporting-internal-working-${var.NAMESPACE}"
     mds_extract                = "s3-dq-mds-extract-${var.NAMESPACE}"
     raw_file_index_internal    = "s3-dq-raw-file-index-internal-${var.NAMESPACE}"
+    fms_working                = "s3-dq-fms-working-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -68,6 +69,7 @@ module "apps" {
     reporting_internal_working = "private"
     mds_extract                = "private"
     raw_file_index_internal    = "private"
+    fms_working                = "private"
   }
 
   vpc_peering_connection_ids = {
