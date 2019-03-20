@@ -30,6 +30,7 @@ module "ad" {
 resource "aws_kms_key" "ad_passwords_key" {
   description             = "KMS key to store AD passwords"
   deletion_window_in_days = 30
+  enable_key_rotation     = true
 
   policy = <<EOF
   {
