@@ -17,7 +17,6 @@ module "ops" {
   bastion3_windows_ip             = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14"
   management_access               = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11/32"
   analysis_instance_ip            = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.8"
-  analysis_test_instance_ip       = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.9"
   ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   adminpassword                   = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
