@@ -22,6 +22,7 @@ module "ops" {
   adminpassword                   = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
   log_archive_s3_bucket           = "${module.apps.log_archive_bucket_id}"
   s3_bucket_name                  = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
+  athena_log_bucket               = "${module.apps.athena_log_bucket}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
