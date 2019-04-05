@@ -23,7 +23,7 @@ module "ops" {
   log_archive_s3_bucket           = "${module.apps.log_archive_bucket_id}"
   s3_bucket_name                  = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
   athena_log_bucket               = "${module.apps.athena_log_bucket}"
-  athena_log_bucket               = "${module.apps.aws_bucket_key}"
+  aws_bucket_key                  = "${module.apps.aws_bucket_key}"
 
   vpc_peering_connection_ids = {
     ops_and_apps    = "${aws_vpc_peering_connection.apps_to_ops.id}"
