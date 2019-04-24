@@ -17,8 +17,8 @@ module "apps" {
   ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
   naming_suffix                   = "${local.naming_suffix}"
   namespace                       = "${var.NAMESPACE}"
-  s3_haproxy_config_bucket        = "${module.peering.haproxy_config_bucket}"
-  s3_haproxy_config_bucket_key    = "${module.peering.haproxy_config_bucket_key}"
+  s3_haproxy_config_bucket        = "${module.apps.httpd_config_bucket}"
+  s3_haproxy_config_bucket_key    = "${module.apps.httpd_config_bucket_key}"
 
   s3_bucket_name = {
     archive_log                = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
