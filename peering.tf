@@ -10,7 +10,6 @@ module "peering" {
   public_subnet_cidr_block  = "10.3.3.0/24"
   haproxy_private_ip        = "10.3.0.11"
   haproxy_private_ip2       = "10.3.0.12"
-  haproxy_private_ip3       = "10.3.0.13"
   s3_bucket_name            = "s3-dq-peering-haproxy-config-bucket-${var.NAMESPACE}"
   s3_bucket_acl             = "private"
   log_archive_s3_bucket     = "${module.apps.log_archive_bucket_id}"
