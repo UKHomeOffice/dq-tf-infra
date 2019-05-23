@@ -1,7 +1,7 @@
 pipeline:
 
   init:
-    image: chrisns/docker-terragrunt
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
     pull: true
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
@@ -36,7 +36,7 @@ pipeline:
       - NOTPROD_ACC_KEY
 
   validate:
-    image: chrisns/docker-terragrunt
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
@@ -58,7 +58,7 @@ pipeline:
       - SSH_KEY
 
   plan-notprod:
-    image: chrisns/docker-terragrunt
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
     pull: true
     commands:
       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
