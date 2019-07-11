@@ -25,6 +25,7 @@ module "ops" {
   adminpassword                                        = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
   log_archive_s3_bucket                                = "${module.apps.log_archive_bucket_id}"
   s3_bucket_name                                       = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
+  ops_config_bucket                                    = "s3-dq-ops-config-${var.NAMESPACE}"
   athena_log_bucket                                    = "${module.apps.athena_log_bucket}"
   aws_bucket_key                                       = "${module.apps.aws_bucket_key}"
   dq_pipeline_ops_readwrite_database_name_list         = "${module.apps.dq_pipeline_ops_readwrite_database_name_list}"
