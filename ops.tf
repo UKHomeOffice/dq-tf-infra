@@ -21,6 +21,7 @@ module "ops" {
   bastion6_windows_ip                                  = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.17"
   bastion7_windows_ip                                  = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.18"
   bastion8_windows_ip                                  = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.19"
+  nfs_windows_ip                                       = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.20"
   management_access                                    = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11/32"
   analysis_instance_ip                                 = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.8"
   tableau_dev_ip                                       = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.10"
