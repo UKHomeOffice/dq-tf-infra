@@ -32,6 +32,7 @@ module "ops" {
   s3_bucket_name                                       = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
   ops_config_bucket                                    = "s3-dq-ops-config-${var.NAMESPACE}"
   ops_nfs_backup_bucket                                = "s3-dq-freight-nfs-backup-${var.NAMESPACE}"
+  athena_maintenance_bucket                            = "s3-dq-athena-archive-bucket-${var.NAMESPACE}"
   athena_log_bucket                                    = "${module.apps.athena_log_bucket}"
   aws_bucket_key                                       = "${module.apps.aws_bucket_key}"
   dq_pipeline_ops_readwrite_database_name_list         = "${module.apps.dq_pipeline_ops_readwrite_database_name_list}"
