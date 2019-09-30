@@ -52,6 +52,7 @@ module "apps" {
     athena_log                 = "s3-dq-athena-log-${var.NAMESPACE}"
     freight_archive            = "s3-dq-freight-archive-${var.NAMESPACE}"
     bfid_virus_free_archive    = "s3-dq-bfid-virus-free-archive-${var.NAMESPACE}"
+    bfid_virus_scan            = "s3-dq-bfid-virus-scan-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -84,6 +85,7 @@ module "apps" {
     athena_log                 = "private"
     freight_archive            = "private"
     bfid_virus_free_archive    = "private"
+    bfid_virus_scan            = "private"
   }
 
   vpc_peering_connection_ids = {
