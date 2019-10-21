@@ -55,6 +55,7 @@ module "apps" {
     bfid_virus_free_archive    = "s3-dq-bfid-virus-free-archive-${var.NAMESPACE}"
     bfid_virus_scan            = "s3-dq-bfid-virus-scan-${var.NAMESPACE}"
     bfid_virus_definitions     = "s3-dq-bfid-virus-definitions-${var.NAMESPACE}"
+    nats_archive               = "s3-dq-nats-archive-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -90,6 +91,7 @@ module "apps" {
     bfid_virus_free_archive    = "private"
     bfid_virus_scan            = "private"
     bfid_virus_definitions     = "private"
+    nats_archive               = "private"
   }
 
   vpc_peering_connection_ids = {
