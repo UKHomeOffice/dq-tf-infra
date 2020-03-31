@@ -95,7 +95,6 @@ module "apps" {
     bfid_virus_definitions     = "private"
     nats_archive               = "private"
     nats_internal              = "private"
-    cdlz_bitd_input            = "private"
   }
 
   vpc_peering_connection_ids = {
