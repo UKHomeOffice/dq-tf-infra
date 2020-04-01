@@ -1,5 +1,5 @@
 module "apps" {
-  source = "github.com/UKHomeOffice/dq-tf-apps"
+  source = "github.com/UKHomeOffice/dq-tf-apps.git?ref=v1.0.0"
 
   providers = {
     aws = "aws.APPS"
@@ -57,10 +57,6 @@ module "apps" {
     bfid_virus_definitions     = "s3-dq-bfid-virus-definitions-${var.NAMESPACE}"
     nats_archive               = "s3-dq-nats-archive-${var.NAMESPACE}"
     nats_internal              = "s3-dq-nats-internal-${var.NAMESPACE}"
-    cdlz_bitd_input            = "s3-dq-cdlz-bitd-input-${var.NAMESPACE}"
-    api_arrivals               = "s3-dq-api-arrivals-${var.NAMESPACE}"
-    accuracy_score             = "s3-dq-accuracy-score-${var.NAMESPACE}"
-
   }
 
   s3_bucket_acl = {
@@ -98,9 +94,6 @@ module "apps" {
     bfid_virus_definitions     = "private"
     nats_archive               = "private"
     nats_internal              = "private"
-    cdlz_bitd_input            = "private"
-    api_arrivals               = "private"
-    accuracy_score             = "private"
   }
 
   vpc_peering_connection_ids = {
