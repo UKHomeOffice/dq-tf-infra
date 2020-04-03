@@ -1,5 +1,5 @@
 module "apps" {
-  source = "github.com/UKHomeOffice/dq-tf-apps.git?ref=v1.0.0"
+  source = "github.com/UKHomeOffice/dq-tf-apps"
 
   providers = {
     aws = "aws.APPS"
