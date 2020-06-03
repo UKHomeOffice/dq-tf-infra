@@ -1,13 +1,13 @@
 module "ad" {
   providers = {
-    aws = "aws.APPS"
+    aws = aws.APPS
   }
 
-  source = "github.com/ukhomeoffice/dq-tf-ad"
+  source = "git::https://github.com/ukhomeoffice/dq-tf-ad.git?ref=TF12-upgrade"
 
   peer_with = [
-    "${module.ops.opsvpc_id}",
-    "${module.apps.appsvpc_id}",
+    module.ops.opsvpc_id,
+    module.apps.appsvpc_id,
   ]
 
   cidr_block                      = "10.99.0.0/16"
@@ -15,8 +15,8 @@ module "ad" {
   peer_count                      = 2
 
   subnets = [
-    "${module.ops.ad_subnet_id}",
-    "${module.apps.ad_subnet_id}",
+    module.ops.ad_subnet_id,
+    module.apps.ad_subnet_id,
   ]
 
   subnet_count = 2
@@ -52,4 +52,5 @@ resource "aws_kms_key" "ad_passwords_key" {
   ]
 }
 EOF
+
 }
