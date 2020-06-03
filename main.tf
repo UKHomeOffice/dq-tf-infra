@@ -1,10 +1,11 @@
 terraform {
-  backend "s3" {}
+  backend "s3" {
+  }
 }
 
 locals {
   naming_suffix  = "${var.NAMESPACE}-dq"
-  iam_role_count = "${length(module.apps.iam_roles)}"
+  iam_role_count = length(module.apps.iam_roles)
 }
 
 provider "aws" {
@@ -14,13 +15,13 @@ provider "aws" {
 provider "aws" {
   alias      = "CI"
   region     = "eu-west-2"
-  access_key = "${var.CI_ID}"
-  secret_key = "${var.CI_KEY}"
+  access_key = var.CI_ID
+  secret_key = var.CI_KEY
 }
 
 provider "aws" {
   alias      = "APPS"
   region     = "eu-west-2"
-  access_key = "${var.APPS_ID}"
-  secret_key = "${var.APPS_KEY}"
+  access_key = var.APPS_ID
+  secret_key = var.APPS_KEY
 }
