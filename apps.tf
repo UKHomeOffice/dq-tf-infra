@@ -1,5 +1,5 @@
 module "apps" {
-  source = "git::https://github.com/ukhomeoffice/dq-tf-apps.git?ref=TF12-upgrade"
+  source = "github.com/UKHomeOffice/dq-tf-apps"
 
   providers = {
     aws = aws.APPS
