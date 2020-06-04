@@ -79,30 +79,30 @@ pipeline:
       - NOTPROD_ACC_KEY
       - SSH_KEY
 
-#   apply-notprod:
-#     image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-#     pull: true
-#     commands:
-#       - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
-#       - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
-#       - export CI_ID=$${TF_VAR_CI_ID}
-#       - export CI_KEY=$${TF_VAR_CI_KEY}
-#       - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-#       - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-#       - terragrunt apply -auto-approve -parallelism=50 plan
-#     when:
-#       branch: master
-#       event: push
-#     secrets:
-#       - TF_VAR_CI_ID
-#       - TF_VAR_CI_KEY
-#       - AWS_ACCESS_KEY_ID
-#       - AWS_SECRET_ACCESS_KEY
-#       - NOTPROD_ACC_ID
-#       - NOTPROD_ACC_KEY
-#       - SSH_KEY
-#
-#
+  apply-notprod:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+    pull: true
+    commands:
+      - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+      - terragrunt apply -auto-approve -parallelism=50 plan
+    when:
+      branch: master
+      event: push
+    secrets:
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
+      - SSH_KEY
+
+
 ## production
   init-prod:
     image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
@@ -147,27 +147,27 @@ pipeline:
       - TF_VAR_CI_KEY
       - SSH_KEY
 
-#   apply-prod:
-#     image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-#     pull: true
-#     commands:
-#       - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
-#       - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
-#       - export CI_ID=$${TF_VAR_CI_ID}
-#       - export CI_KEY=$${TF_VAR_CI_KEY}
-#       - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-#       - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-#       - terragrunt apply -auto-approve -parallelism=50 prodplan
-#     environment:
-#       - TF_VAR_NAMESPACE=prod
-#     when:
-#       environment: prod
-#       event: deployment
-#     secrets:
-#       - AWS_ACCESS_KEY_ID
-#       - AWS_SECRET_ACCESS_KEY
-#       - PROD_ACC_ID
-#       - PROD_ACC_KEY
-#       - TF_VAR_CI_ID
-#       - TF_VAR_CI_KEY
-#       - SSH_KEY
+  apply-prod:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+    pull: true
+    commands:
+      - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+      - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+      - export CI_ID=$${TF_VAR_CI_ID}
+      - export CI_KEY=$${TF_VAR_CI_KEY}
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+      - terragrunt apply -auto-approve -parallelism=50 prodplan
+    environment:
+      - TF_VAR_NAMESPACE=prod
+    when:
+      environment: prod
+      event: deployment
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - PROD_ACC_ID
+      - PROD_ACC_KEY
+      - TF_VAR_CI_ID
+      - TF_VAR_CI_KEY
+      - SSH_KEY
