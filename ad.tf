@@ -3,7 +3,7 @@ module "ad" {
     aws = aws.APPS
   }
 
-  source = "git::https://github.com/ukhomeoffice/dq-tf-ad.git?ref=TF12-upgrade"
+  source = "github.com/UKHomeOffice/dq-tf-ad"
 
   peer_with = [
     module.ops.opsvpc_id,

@@ -1,5 +1,5 @@
 module "peering" {
-  source = "git::https://github.com/ukhomeoffice/dq-tf-peering.git?ref=TF12-upgrade"
+  source = "github.com/UKHomeOffice/dq-tf-peering"
 
   providers = {
     aws = aws.APPS
