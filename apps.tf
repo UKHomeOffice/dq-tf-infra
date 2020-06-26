@@ -60,7 +60,6 @@ module "apps" {
     cdlz_bitd_input            = "s3-dq-cdlz-bitd-input-${var.NAMESPACE}"
     api_arrivals               = "s3-dq-api-arrivals-${var.NAMESPACE}"
     accuracy_score             = "s3-dq-accuracy-score-${var.NAMESPACE}"
-    api_cdlz_msk               = "s3-dq-api-cdlz-msk-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
