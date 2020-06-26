@@ -101,7 +101,6 @@ module "apps" {
     cdlz_bitd_input            = "private"
     api_arrivals               = "private"
     accuracy_score             = "private"
-    api_cdlz_msk               = "private"
   }
 
   vpc_peering_connection_ids = {
