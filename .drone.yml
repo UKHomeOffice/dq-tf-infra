@@ -19,7 +19,6 @@ pipeline:
       - NOTPROD_ACC_KEY
       - SSH_KEY
 
-
   testsuite:
     image: docker:18.05
     environment:
@@ -103,7 +102,6 @@ pipeline:
       - NOTPROD_ACC_ID
       - NOTPROD_ACC_KEY
       - SSH_KEY
-
 
 ## production
   init-prod:
