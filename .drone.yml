@@ -91,7 +91,9 @@ pipeline:
       - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
       - terragrunt apply -auto-approve -parallelism=50 plan
     when:
-      branch: master
+      branch:
+        include: [ master ]
+        exclude: [ plan/* ]
       event: push
     secrets:
       - TF_VAR_CI_ID
