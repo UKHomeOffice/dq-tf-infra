@@ -15,3 +15,5 @@ variable "NAMESPACE" {
   default = "notprod"
 }
 
+variable "DOMAIN_JOINER_PWD" {
+}
