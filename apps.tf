@@ -63,6 +63,8 @@ module "apps" {
     api_cdlz_msk               = "s3-dq-api-cdlz-msk-${var.NAMESPACE}"
     drt_export                 = "s3-dq-drt-extra-${var.NAMESPACE}"
     api_rls_xrs_reconciliation = "s3-dq-rls-xrs-reconciliation-${var.NAMESPACE}"
+    dq_fs_archive              = "s3-dq-fs-archive-${var.NAMESPACE}"
+    dq_fs_internal             = "s3-dq-fs-internal-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -106,6 +108,8 @@ module "apps" {
     api_cdlz_msk               = "private"
     drt_export                 = "private"
     api_rls_xrs_reconciliation = "private"
+    dq_fs_archive              = "private"
+    dq_fs_internal             = "private"
 
   }
 
