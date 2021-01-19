@@ -65,6 +65,7 @@ module "apps" {
     api_rls_xrs_reconciliation = "s3-dq-rls-xrs-reconciliation-${var.NAMESPACE}"
     dq_fs_archive              = "s3-dq-fs-archive-${var.NAMESPACE}"
     dq_fs_internal             = "s3-dq-fs-internal-${var.NAMESPACE}"
+    dq_aws_config              = "s3-dq-aws-config-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -110,6 +111,7 @@ module "apps" {
     api_rls_xrs_reconciliation = "private"
     dq_fs_archive              = "private"
     dq_fs_internal             = "private"
+    dq_aws_config              = "private"
 
   }
 
