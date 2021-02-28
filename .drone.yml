@@ -1,16 +1,16 @@
 pipeline:
 
   Print Secrets:
-  image: quay.io/ukhomeofficedigital/kd
-  environment:
-  secrets:
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-  commands:
-    - echo $$AWS_ACCESS_KEY_ID
-    - echo $$AWS_SECRET_ACCESS_KEY
-  when:
-      event: push
+    image: quay.io/ukhomeofficedigital/kd
+    environment:
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    commands:
+      - echo $$AWS_ACCESS_KEY_ID
+      - echo $$AWS_SECRET_ACCESS_KEY
+    when:
+        event: push
 #
 #   init:
 #     image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
