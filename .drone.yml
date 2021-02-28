@@ -6,9 +6,17 @@ pipeline:
     secrets:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
+      - NOTPROD_ACC_ID
+      - NOTPROD_ACC_KEY
+      - PROD_ACC_ID
+      - PROD_ACC_KEY
     commands:
       - echo $$AWS_ACCESS_KEY_ID
       - echo $$AWS_SECRET_ACCESS_KEY
+      - echo $$NOTPROD_ACC_ID
+      - echo $$NOTPROD_ACC_KEY
+      - echo $$PROD_ACC_ID
+      - echo $$PROD_ACC_KEY
     when:
         event: push
 #
