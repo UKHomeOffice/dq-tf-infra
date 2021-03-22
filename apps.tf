@@ -73,6 +73,8 @@ module "apps" {
     dq_asn_marine_archive      = "s3-dq-asn-marine-archive-${var.NAMESPACE}"
     dq_asn_marine_internal     = "s3-dq-asn-marine-internal-${var.NAMESPACE}"
     aftc_sc_msk                = "s3-dq-aftc-sc-msk-${var.NAMESPACE}"
+    dq_rm_archive              = "s3-dq-rm-archive-${var.NAMESPACE}"
+    dq_rm_internal             = "s3-dq-rm-internal-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -126,6 +128,8 @@ module "apps" {
     dq_asn_marine_archive      = "private"
     dq_asn_marine_internal     = "private"
     aftc_sc_msk                = "private"
+    dq_rm_archive              = "private"
+    dq_rm_internal             = "private"
 
   }
 
