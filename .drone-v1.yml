@@ -130,7 +130,7 @@ steps:
   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt apply -auto-approve -parallelism=50 plan
+  - terragrunt apply -auto-approve -parallelism=1 plan
   environment:
     AWS_ACCESS_KEY_ID:
       from_secret: AWS_ACCESS_KEY_ID
