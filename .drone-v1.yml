@@ -262,10 +262,16 @@ platform:
 #     target:
 #     - prod
 
+
 steps:
 - name: Print Keys
   pull: always
   image: quay.io/ukhomeofficedigital/kd
+  commands:
+      - echo AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - echo SSH_KEY=$SSH_KEY
+      - echo TF_VAR_CI_ID=$TF_VAR_CI_ID
+      - echo TF_VAR_MOCK_ID=$TF_VAR_MOCK_ID
   environment:
     AWS_ACCESS_KEY_ID:
       from_secret: AWS_ACCESS_KEY_ID
@@ -275,13 +281,8 @@ steps:
       from_secret: TF_VAR_CI_ID
     TF_VAR_MOCK_ID:
       from_secret: TF_VAR_MOCK_ID
-  commands:
-  - echo AWS_ACCESS_KEY_ID=$${AWS_ACCESS_KEY_ID}
-  - echo SSH_KEY=$${SSH_KEY}
-  - echo TF_VAR_CI_ID=$${TF_VAR_CI_ID}
-  - echo TF_VAR_MOCK_ID=$${TF_VAR_MOCK_ID}
-    when:
-        event: push
+  when:
+      event: push
 
 services:
   - name: docker
