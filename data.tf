@@ -34,9 +34,9 @@ data "aws_caller_identity" "apps" {
   provider = aws.APPS
 }
 
-# data "aws_caller_identity" "ci" {
-#   provider = aws.CI
-# }
+data "aws_caller_identity" "ci" {
+  provider = aws.CI
+}
 
 data "aws_kms_secrets" "ad_joiner_password" {
   secret {

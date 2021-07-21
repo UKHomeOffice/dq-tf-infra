@@ -12,12 +12,12 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-# provider "aws" {
-#   alias      = "CI"
-#   region     = "eu-west-2"
-#   access_key = var.CI_ID
-#   secret_key = var.CI_KEY
-# }
+provider "aws" {
+  alias      = "CI"
+  region     = "eu-west-2"
+  access_key = var.CI_ID
+  secret_key = var.CI_KEY
+}
 
 provider "aws" {
   alias      = "APPS"
