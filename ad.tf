@@ -32,24 +32,44 @@ resource "aws_kms_key" "ad_passwords_key" {
   deletion_window_in_days = 30
   enable_key_rotation     = true
 
+  #   policy = <<EOF
+  #   {
+  #   "Version": "2012-10-17",
+  #   "Id": "key-default-1",
+  #   "Statement": [
+  #     {
+  #       "Sid": "Enable IAM User Permissions",
+  #       "Effect": "Allow",
+  #       "Principal": {
+  #         "AWS": [
+  #           "arn:aws:iam::${data.aws_caller_identity.ci.account_id}:root",
+  #           "arn:aws:iam::${data.aws_caller_identity.apps.account_id}:root"
+  #         ]
+  #       },
+  #       "Action": "kms:*",
+  #       "Resource": "*"
+  #     }
+  #   ]
+  # }
+  # EOF
+
   policy = <<EOF
+{
+"Version": "2012-10-17",
+"Id": "key-default-1",
+"Statement": [
   {
-  "Version": "2012-10-17",
-  "Id": "key-default-1",
-  "Statement": [
-    {
-      "Sid": "Enable IAM User Permissions",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-          "arn:aws:iam::${data.aws_caller_identity.ci.account_id}:root",
-          "arn:aws:iam::${data.aws_caller_identity.apps.account_id}:root"
-        ]
-      },
-      "Action": "kms:*",
-      "Resource": "*"
-    }
-  ]
+    "Sid": "Enable IAM User Permissions",
+    "Effect": "Allow",
+    "Principal": {
+      "AWS": [
+        "arn:aws:iam::${data.aws_caller_identity.apps.account_id}:root"
+      ]
+    },
+    "Action": "kms:*",
+    "Resource": "*"
+  }
+]
 }
 EOF
 
