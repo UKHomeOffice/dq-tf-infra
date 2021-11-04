@@ -1,6 +1,15 @@
-resource "aws_iam_policy" "write_to_cw" {
-  name     = "dq-tf-infra-write_to_cw"
+resource "aws_iam_role_policy" "write_to_cw" {
   provider = aws.APPS
+  role = element(
+    concat(
+      module.apps.iam_roles,
+      module.ops.iam_roles,
+      module.peering.iam_roles,
+    ),
+    count.index,
+  )
+  policy_arn = aws_iam_policy.write_to_cw.arn
+  count      = 20
 
   policy = <<EOF
 {
@@ -57,17 +66,4 @@ resource "aws_iam_policy" "write_to_cw" {
 }
 EOF
 
-}
-
-resource "aws_iam_role_policy_attachment" "write_to_cw" {
-  role = element(
-    concat(
-      module.apps.iam_roles,
-      module.ops.iam_roles,
-      module.peering.iam_roles,
-    ),
-    count.index,
-  )
-  policy_arn = aws_iam_policy.write_to_cw.arn
-  count      = 20
 }
