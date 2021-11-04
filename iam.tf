@@ -8,8 +8,7 @@ resource "aws_iam_role_policy" "write_to_cw" {
     ),
     count.index,
   )
-  policy_arn = aws_iam_policy.write_to_cw.arn
-  count      = 20
+  count = 20
 
   policy = <<EOF
 {
