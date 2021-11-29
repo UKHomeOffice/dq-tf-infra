@@ -1,4 +1,5 @@
 resource "aws_iam_role_policy" "write_to_cw" {
+  name     = "dq-tf-infra-write-to-cw-${count.index}"
   provider = aws.APPS
   role = element(
     concat(
