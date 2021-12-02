@@ -59,4 +59,3 @@ data "aws_kms_secrets" "ad_admin_password" {
     }
   }
 }
-
