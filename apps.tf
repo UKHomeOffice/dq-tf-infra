@@ -77,6 +77,7 @@ module "apps" {
     dq_data_generator          = "s3-dq-data-generator-${var.NAMESPACE}"
     dq_ais_archive             = "s3-dq-ais-archive-${var.NAMESPACE}"
     dq_gait_landing_staging    = "s3-dq-gait-landing-staging"
+    dq_pnr_archive             = "s3-dq-pnr-archive-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -134,6 +135,7 @@ module "apps" {
     dq_data_generator          = "private"
     dq_ais_archive             = "private"
     dq_gait_landing_staging    = "private"
+    dq_pnr_archive             = "private"
 
   }
 
