@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "write_to_cw" {
-  name     = "dq-tf-infra-write-to-cw-${count.index}"
+  name     = "dq-tf-infra-write-to-cw-count-${count.index}"
   provider = aws.APPS
   role = element(
     concat(
@@ -69,7 +69,7 @@ EOF
 }
 
 resource "aws_iam_policy" "write_to_cw_new" {
-  name     = "dq-tf-infra-write-to-cw-new"
+  name     = "dq-tf-infra-write-to-cw"
   provider = aws.APPS
 
   policy = <<EOF
