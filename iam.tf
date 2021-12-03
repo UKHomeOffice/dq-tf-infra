@@ -3,7 +3,6 @@ resource "aws_iam_role_policy" "write_to_cw" {
   provider = aws.APPS
   role = element(
     concat(
-      module.apps.iam_roles,
       module.ops.iam_roles,
       module.peering.iam_roles,
     ),
