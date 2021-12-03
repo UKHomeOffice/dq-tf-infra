@@ -2,25 +2,25 @@ module "apps" {
   source = "github.com/UKHomeOffice/dq-tf-apps"
 
   providers = {
-    aws = "aws.APPS"
+    aws = aws.APPS
   }
 
   cidr_block                      = "10.1.0.0/16"
   public_subnet_cidr_block        = "10.1.0.0/24"
   ad_subnet_cidr_block            = "10.1.16.0/24"
-  haproxy_private_ip              = "${module.peering.haproxy_private_ip}"
-  haproxy_private_ip2             = "${module.peering.haproxy_private_ip2}"
+  haproxy_private_ip              = module.peering.haproxy_private_ip
+  haproxy_private_ip2             = module.peering.haproxy_private_ip2
   az                              = "eu-west-2a"
   az2                             = "eu-west-2b"
-  adminpassword                   = "${data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]}"
-  ad_aws_ssm_document_name        = "${module.ad.ad_aws_ssm_document_name}"
-  ad_writer_instance_profile_name = "${module.ad.ad_writer_instance_profile_name}"
-  naming_suffix                   = "${local.naming_suffix}"
-  namespace                       = "${var.NAMESPACE}"
-  s3_httpd_config_bucket          = "${module.ops.httpd_config_bucket}"
-  s3_httpd_config_bucket_key      = "${module.ops.httpd_config_bucket_key}"
-  haproxy_config_bucket           = "${module.peering.haproxy_config_bucket}"
-  haproxy_config_bucket_key       = "${module.peering.haproxy_config_bucket_key}"
+  adminpassword                   = data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]
+  ad_aws_ssm_document_name        = module.ad.ad_aws_ssm_document_name
+  ad_writer_instance_profile_name = module.ad.ad_writer_instance_profile_name
+  naming_suffix                   = local.naming_suffix
+  namespace                       = var.NAMESPACE
+  s3_httpd_config_bucket          = module.ops.httpd_config_bucket
+  s3_httpd_config_bucket_key      = module.ops.httpd_config_bucket_key
+  haproxy_config_bucket           = module.peering.haproxy_config_bucket
+  haproxy_config_bucket_key       = module.peering.haproxy_config_bucket_key
 
   s3_bucket_name = {
     archive_log                = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
@@ -56,6 +56,27 @@ module "apps" {
     bfid_virus_definitions     = "s3-dq-bfid-virus-definitions-${var.NAMESPACE}"
     nats_archive               = "s3-dq-nats-archive-${var.NAMESPACE}"
     nats_internal              = "s3-dq-nats-internal-${var.NAMESPACE}"
+    cdlz_bitd_input            = "s3-dq-cdlz-bitd-input-${var.NAMESPACE}"
+    api_arrivals               = "s3-dq-api-arrivals-${var.NAMESPACE}"
+    accuracy_score             = "s3-dq-accuracy-score-${var.NAMESPACE}"
+    api_cdlz_msk               = "s3-dq-api-cdlz-msk-${var.NAMESPACE}"
+    drt_export                 = "s3-dq-drt-extra-${var.NAMESPACE}"
+    api_rls_xrs_reconciliation = "s3-dq-rls-xrs-reconciliation-${var.NAMESPACE}"
+    dq_fs_archive              = "s3-dq-fs-archive-${var.NAMESPACE}"
+    dq_fs_internal             = "s3-dq-fs-internal-${var.NAMESPACE}"
+    dq_aws_config              = "s3-dq-aws-config-${var.NAMESPACE}"
+    dq_asn_archive             = "s3-dq-asn-archive-${var.NAMESPACE}"
+    dq_asn_internal            = "s3-dq-asn-internal-${var.NAMESPACE}"
+    dq_snsgb_archive           = "s3-dq-snsgb-archive-${var.NAMESPACE}"
+    dq_snsgb_internal          = "s3-dq-snsgb-internal-${var.NAMESPACE}"
+    dq_asn_marine_archive      = "s3-dq-asn-marine-archive-${var.NAMESPACE}"
+    dq_asn_marine_internal     = "s3-dq-asn-marine-internal-${var.NAMESPACE}"
+    dq_rm_archive              = "s3-dq-rm-archive-${var.NAMESPACE}"
+    dq_rm_internal             = "s3-dq-rm-internal-${var.NAMESPACE}"
+    dq_data_generator          = "s3-dq-data-generator-${var.NAMESPACE}"
+    dq_ais_archive             = "s3-dq-ais-archive-${var.NAMESPACE}"
+    dq_gait_landing_staging    = "s3-dq-gait-landing-staging"
+    dq_pnr_archive             = "s3-dq-pnr-archive-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -92,22 +113,44 @@ module "apps" {
     bfid_virus_definitions     = "private"
     nats_archive               = "private"
     nats_internal              = "private"
+    cdlz_bitd_input            = "private"
+    api_arrivals               = "private"
+    accuracy_score             = "private"
+    api_cdlz_msk               = "private"
+    drt_export                 = "private"
+    api_rls_xrs_reconciliation = "private"
+    dq_fs_archive              = "private"
+    dq_fs_internal             = "private"
+    dq_aws_config              = "private"
+    dq_asn_archive             = "private"
+    dq_asn_internal            = "private"
+    dq_snsgb_archive           = "private"
+    dq_snsgb_internal          = "private"
+    dq_asn_marine_archive      = "private"
+    dq_asn_marine_internal     = "private"
+    dq_rm_archive              = "private"
+    dq_rm_internal             = "private"
+    dq_data_generator          = "private"
+    dq_ais_archive             = "private"
+    dq_gait_landing_staging    = "private"
+    dq_pnr_archive             = "private"
+
   }
 
   vpc_peering_connection_ids = {
-    peering_to_peering = "${aws_vpc_peering_connection.peering_to_apps.id}"
-    peering_to_ops     = "${aws_vpc_peering_connection.apps_to_ops.id}"
+    peering_to_peering = aws_vpc_peering_connection.peering_to_apps.id
+    peering_to_ops     = aws_vpc_peering_connection.apps_to_ops.id
   }
 
   route_table_cidr_blocks = {
-    peering_cidr = "${module.peering.peeringvpc_cidr_block}"
-    ops_cidr     = "${module.ops.opsvpc_cidr_block}"
+    peering_cidr = module.peering.peeringvpc_cidr_block
+    ops_cidr     = module.ops.opsvpc_cidr_block
   }
 
   ad_sg_cidr_ingress = [
-    "${module.peering.peeringvpc_cidr_block}",
-    "${module.ops.opsvpc_cidr_block}",
-    "${module.ad.cidr_block}",
+    module.peering.peeringvpc_cidr_block,
+    module.ops.opsvpc_cidr_block,
+    module.ad.cidr_block,
     "10.1.0.0/16",
   ]
 }
