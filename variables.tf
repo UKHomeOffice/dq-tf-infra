@@ -26,3 +26,21 @@ variable "account_id" {
     "prod"    = "337779336338"
   }
 }
+
+variable "dq_ips_notprod" {
+  type = list(string)
+  default = [
+    "35.177.179.157/32",
+    "35.177.132.243/32",
+    "35.177.100.236/32"
+  ]
+}
+
+variable "dq_ips_prod" {
+  type = list(string)
+  default = [
+    "52.56.43.118/32",
+    "35.177.168.246/32",
+    "35.177.128.206/32"
+  ]
+}
