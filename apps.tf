@@ -22,7 +22,6 @@ module "apps" {
   haproxy_config_bucket           = module.peering.haproxy_config_bucket
   haproxy_config_bucket_key       = module.peering.haproxy_config_bucket_key
   account_id                      = var.account_id
-  dq_pub_ips                      = var.NAMESPACE == "prod" ? var.dq_ips_prod : var.dq_ips_notprod
 
   s3_bucket_name = {
     archive_log                = "s3-dq-log-archive-bucket-${var.NAMESPACE}"
