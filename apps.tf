@@ -80,6 +80,7 @@ module "apps" {
     dq_gait_landing_staging    = "s3-dq-gait-landing-staging"
     dq_pnr_archive             = "s3-dq-pnr-archive-${var.NAMESPACE}"
     dq_pnr_internal            = "s3-dq-pnr-internal-${var.NAMESPACE}"
+    carrier_portal_docs        = "s3-dq-carrier-portal-docs-${var.NAMESPACE}"
   }
 
   s3_bucket_acl = {
@@ -139,6 +140,7 @@ module "apps" {
     dq_gait_landing_staging    = "private"
     dq_pnr_archive             = "private"
     dq_pnr_internal            = "private"
+    carrier_portal_docs        = "private"
 
   }
 
