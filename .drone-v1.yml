@@ -7,260 +7,452 @@ platform:
   os: linux
   arch: amd64
 
+global-variables:
+  vault-image: &vault-image docker.digital.homeoffice.gov.uk/dq/dq-vault-awscli:1.43
+  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+
+x-anchors:
+  retrieve-deployment-aws-key: &retrieve-deployment-aws-key
+    # Retrive vault secrets
+    - vault read aws_dacc_dq/creds/drone > aws_creds.json
+    - export LEASE_ID=$(cat aws_creds.json | grep lease_id | awk -F ' ' '{print $2}')
+    # Update the token TTL to 20mins
+    - vault lease renew -increment=1200 $${LEASE_ID}
+    # Get the AWS credentials
+    - echo "export DEP_AWS_ACCESS_KEY_ID=$(cat aws_creds.json | grep access_key | awk -F ' ' '{print $2}')" > set_aws_secrets.sh
+    - echo "export DEP_AWS_SECRET_ACCESS_KEY=$(cat aws_creds.json | grep secret_key | awk -F ' ' '{print $2}')" >> set_aws_secrets.sh
+    - echo "export AWS_DEFAULT_REGION=eu-west-2" >> set_aws_secrets.sh
+    # Since AWS is eventually consistent we need to sleep a little while so the AWS key is created and made available
+    - sleep 20
+
+  retrieve-state-aws-key: &retrieve-state-aws-key
+    # Retrive vault secrets
+    - vault read aws_dacc_dq/creds/drone > aws_creds.json
+    - export LEASE_ID=$(cat aws_creds.json | grep lease_id | awk -F ' ' '{print $2}')
+    # Update the token TTL to 20mins
+    - vault lease renew -increment=1200 $${LEASE_ID}
+    # Get the AWS credentials 
+    - echo "export STATE_AWS_ACCESS_KEY_ID=$(cat aws_creds.json | grep access_key | awk -F ' ' '{print $2}')" > state_secret.sh
+    - echo "export STATE_AWS_SECRET_ACCESS_KEY=$(cat aws_creds.json | grep secret_key | awk -F ' ' '{print $2}')" >> state_secret.sh
+    - echo "export AWS_DEFAULT_REGION=eu-west-2" >> state_secret.sh
+    - sleep 20
+
+  tf-init: &tf-init
+    - source state_secret.sh
+    - source set_aws_secrets.sh
+    - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
+    - echo -e "provider \"aws\" {\n  region = \"eu-west-2\"\n}" > provider.tf
+    - echo -e "terraform {\n  backend \"s3\" {}\n}" > backend.tf
+    - echo -e "remote_state {\n  backend = \"s3\"\n  config = {\n  bucket = \"$BUCKET\"\n  region = \"eu-west-2\"\n  dynamodb_table = \"terraform-state\"\n  key = \"$ENV/$STATE_FILE.tfstate\"\n  encrypt = true \n  }\n}" > terragrunt.hcl
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+    - terragrunt init
+
+  tf-validate: &tf-validate
+    - source state_secret.sh
+    - source set_aws_secrets.sh
+    - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
+    # - export CI_ID=$${TF_VAR_CI_ID}
+    # - export CI_KEY=$${TF_VAR_CI_KEY}
+    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+    - terragrunt validate
+
+  tf-plan: &tf-plan
+    - source state_secret.sh
+    - source set_aws_secrets.sh
+    - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+    - terragrunt plan -lock=false -out=plan
+
+  tf-apply: &tf-apply
+    - source state_secret.sh
+    - source set_aws_secrets.sh
+    - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_ENV_ACCT_ID=$${DEP_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_ENV_ACCT_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
+    - terragrunt apply -auto-approve -parallelism=50 plan
 steps:
-- name: init
-  pull: always
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-  commands:
-  - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt init
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    NOTPROD_ACC_ID:
-      from_secret: NOTPROD_ACC_ID
-    NOTPROD_ACC_KEY:
-      from_secret: NOTPROD_ACC_KEY
-    SSH_KEY:
-      from_secret: SSH_KEY
-  when:
-    branch:
-      exclude:
-      - master
 
-- name: testsuite
+- name: retrieve_aws_state_keys
   pull: if-not-exists
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  image: *vault-image
   commands:
-  - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
+    *retrieve-state-aws-key
   environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    NOTPROD_ACC_ID:
-      from_secret: NOTPROD_ACC_ID
-    NOTPROD_ACC_KEY:
-      from_secret: NOTPROD_ACC_KEY
+    VAULT_ADDR:
+      from_secret: VAULT_ADDR_SIT
+    VAULT_TOKEN:
+      from_secret: VAULT_TOKEN_SIT
   when:
-    branch:
-      exclude:
-      - master
+    event:
+      - push
+      - promote
 
-- name: validate
+- name: retrieve_aws_secrets_np
   pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+  image: *vault-image
   commands:
-  - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
-  - export CI_ID=$${TF_VAR_CI_ID}
-  - export CI_KEY=$${TF_VAR_CI_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt validate
+    *retrieve-deployment-aws-key
   environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    NOTPROD_ACC_ID:
-      from_secret: NOTPROD_ACC_ID
-    NOTPROD_ACC_KEY:
-      from_secret: NOTPROD_ACC_KEY
-    SSH_KEY:
-      from_secret: SSH_KEY
-    TF_VAR_CI_ID:
-      from_secret: TF_VAR_CI_ID
-    TF_VAR_CI_KEY:
-      from_secret: TF_VAR_CI_KEY
+    VAULT_ADDR:
+      from_secret: VAULT_ADDR_NOTPROD
+    VAULT_TOKEN:
+      from_secret: VAULT_TOKEN_NOTPROD
   when:
-    branch:
-      exclude:
-      - master
+    # branch:
+    # - master
+    # - plan/*
+    event:
+      - push
 
-- name: plan-notprod
+- name: init-np
   pull: always
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+  image: *terragrunt-image
   commands:
-  - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
-  - export CI_ID=$${TF_VAR_CI_ID}
-  - export CI_KEY=$${TF_VAR_CI_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt plan -lock=false -out=plan
+    *tf-init
   environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    NOTPROD_ACC_ID:
-      from_secret: NOTPROD_ACC_ID
-    NOTPROD_ACC_KEY:
-      from_secret: NOTPROD_ACC_KEY
+    ENV: notprod
+    STATE_FILE: terraform-12
+    BUCKET: dq-tf-infra-terraform-state
     SSH_KEY:
       from_secret: SSH_KEY
-    TF_VAR_CI_ID:
-      from_secret: TF_VAR_CI_ID
-    TF_VAR_CI_KEY:
-      from_secret: TF_VAR_CI_KEY
   when:
+    # branch:
+    # - master
+    # - plan/*
     event:
     - push
 
-- name: apply-notprod
-  pull: always
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-  commands:
-  - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
-  - export CI_ID=$${TF_VAR_CI_ID}
-  - export CI_KEY=$${TF_VAR_CI_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt apply -auto-approve -parallelism=50 plan
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    NOTPROD_ACC_ID:
-      from_secret: NOTPROD_ACC_ID
-    NOTPROD_ACC_KEY:
-      from_secret: NOTPROD_ACC_KEY
-    SSH_KEY:
-      from_secret: SSH_KEY
-    TF_VAR_CI_ID:
-      from_secret: TF_VAR_CI_ID
-    TF_VAR_CI_KEY:
-      from_secret: TF_VAR_CI_KEY
-  when:
-    branch:
-      include:
-      - master
-      exclude:
-      - plan/*
-    event:
-    - push
-
-- name: init-prod
+- name: validate-tf
   pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+  image: *terragrunt-image
   commands:
-  - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt init -reconfigure
+    *tf-validate
   environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
     DOMAIN_JOINER_PWD:
       from_secret: DOMAIN_JOINER_PWD
-    PROD_ACC_ID:
-      from_secret: PROD_ACC_ID
-    PROD_ACC_KEY:
-      from_secret: PROD_ACC_KEY
     SSH_KEY:
       from_secret: SSH_KEY
-    TF_VAR_NAMESPACE: prod
-  when:
-    event:
-    - promote
-    - push
-
-- name: plan-prod
-  pull: always
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-  commands:
-  - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
-  - export CI_ID=$${TF_VAR_CI_ID}
-  - export CI_KEY=$${TF_VAR_CI_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt plan -lock=false -out=prodplan
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    PROD_ACC_ID:
-      from_secret: PROD_ACC_ID
-    PROD_ACC_KEY:
-      from_secret: PROD_ACC_KEY
-    SSH_KEY:
-      from_secret: SSH_KEY
-    TF_VAR_CI_ID:
-      from_secret: TF_VAR_CI_ID
-    TF_VAR_CI_KEY:
-      from_secret: TF_VAR_CI_KEY
-    TF_VAR_NAMESPACE: prod
-  when:
-    event:
-    - promote
-    - push
-
-- name: apply-prod
-  pull: always
-  image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
-  commands:
-  - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
-  - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
-  - export CI_ID=$${TF_VAR_CI_ID}
-  - export CI_KEY=$${TF_VAR_CI_KEY}
-  - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
-  - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-  - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
-  - terragrunt apply -auto-approve -parallelism=50 prodplan
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET_ACCESS_KEY
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    PROD_ACC_ID:
-      from_secret: PROD_ACC_ID
-    PROD_ACC_KEY:
-      from_secret: PROD_ACC_KEY
-    SSH_KEY:
-      from_secret: SSH_KEY
-    TF_VAR_CI_ID:
-      from_secret: TF_VAR_CI_ID
-    TF_VAR_CI_KEY:
-      from_secret: TF_VAR_CI_KEY
-    TF_VAR_NAMESPACE: prod
   when:
     branch:
-      include:
-      - master
       exclude:
-      - plan/*
+      - master
     event:
-    - promote
-    target:
-    - prod
+    - push
+
+- name: plan-np
+  pull: if-not-exists
+  image: *terragrunt-image
+  commands:
+    *tf-plan
+  environment:
+    TF_VAR_namespace: notprod
+    TF_VAR_naming_suffix: apps-notprod-dq
+  when:
+    # branch:
+    # - master
+    # - plan/*
+    event:
+    - push
+
+# - name: apply-np
+#   pull: if-not-exists
+#   image: *terragrunt-image
+#   commands:
+#     *tf-apply
+#   environment:
+#     TF_VAR_namespace: notprod
+#     TF_VAR_naming_suffix: apps-notprod-dq
+#   when:
+#     branch:
+#       include:
+#       - master
+#       exclude:
+#       - plan/*
+#     event:
+#     - push
+
+
+
+# - name: testsuite
+#   pull: if-not-exists
+#   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+#   commands:
+#   - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     NOTPROD_ACC_ID:
+#       from_secret: NOTPROD_ACC_ID
+#     NOTPROD_ACC_KEY:
+#       from_secret: NOTPROD_ACC_KEY
+#   when:
+#     branch:
+#       exclude:
+#       - master
+
+# - name: validate
+#   pull: if-not-exists
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
+#   - export CI_ID=$${TF_VAR_CI_ID}
+#   - export CI_KEY=$${TF_VAR_CI_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt validate
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     NOTPROD_ACC_ID:
+#       from_secret: NOTPROD_ACC_ID
+#     NOTPROD_ACC_KEY:
+#       from_secret: NOTPROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_CI_ID:
+#       from_secret: TF_VAR_CI_ID
+#     TF_VAR_CI_KEY:
+#       from_secret: TF_VAR_CI_KEY
+#   when:
+#     branch:
+#       exclude:
+#       - master
+
+# - name: plan-notprod
+#   pull: always
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
+#   - export CI_ID=$${TF_VAR_CI_ID}
+#   - export CI_KEY=$${TF_VAR_CI_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt plan -lock=false -out=plan
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     NOTPROD_ACC_ID:
+#       from_secret: NOTPROD_ACC_ID
+#     NOTPROD_ACC_KEY:
+#       from_secret: NOTPROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_CI_ID:
+#       from_secret: TF_VAR_CI_ID
+#     TF_VAR_CI_KEY:
+#       from_secret: TF_VAR_CI_KEY
+#   when:
+#     event:
+#     - push
+
+# - name: apply-notprod
+#   pull: always
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${NOTPROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${NOTPROD_ACC_KEY}
+#   - export CI_ID=$${TF_VAR_CI_ID}
+#   - export CI_KEY=$${TF_VAR_CI_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt apply -auto-approve -parallelism=50 plan
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     NOTPROD_ACC_ID:
+#       from_secret: NOTPROD_ACC_ID
+#     NOTPROD_ACC_KEY:
+#       from_secret: NOTPROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_CI_ID:
+#       from_secret: TF_VAR_CI_ID
+#     TF_VAR_CI_KEY:
+#       from_secret: TF_VAR_CI_KEY
+#   when:
+#     branch:
+#       include:
+#       - master
+#       exclude:
+#       - plan/*
+#     event:
+#     - push
+
+# - name: init-prod
+#   pull: if-not-exists
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt init -reconfigure
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     PROD_ACC_ID:
+#       from_secret: PROD_ACC_ID
+#     PROD_ACC_KEY:
+#       from_secret: PROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_NAMESPACE: prod
+#   when:
+#     event:
+#     - promote
+#     - push
+
+# - name: plan-prod
+#   pull: always
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+#   - export CI_ID=$${TF_VAR_CI_ID}
+#   - export CI_KEY=$${TF_VAR_CI_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt plan -lock=false -out=prodplan
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     PROD_ACC_ID:
+#       from_secret: PROD_ACC_ID
+#     PROD_ACC_KEY:
+#       from_secret: PROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_CI_ID:
+#       from_secret: TF_VAR_CI_ID
+#     TF_VAR_CI_KEY:
+#       from_secret: TF_VAR_CI_KEY
+#     TF_VAR_NAMESPACE: prod
+#   when:
+#     event:
+#     - promote
+#     - push
+
+# - name: apply-prod
+#   pull: always
+#   image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18
+#   commands:
+#   - export TF_VAR_APPS_ID=$${PROD_ACC_ID}
+#   - export TF_VAR_APPS_KEY=$${PROD_ACC_KEY}
+#   - export CI_ID=$${TF_VAR_CI_ID}
+#   - export CI_KEY=$${TF_VAR_CI_KEY}
+#   - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+#   - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+#   - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
+#   - terragrunt apply -auto-approve -parallelism=50 prodplan
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: AWS_SECRET_ACCESS_KEY
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     PROD_ACC_ID:
+#       from_secret: PROD_ACC_ID
+#     PROD_ACC_KEY:
+#       from_secret: PROD_ACC_KEY
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#     TF_VAR_CI_ID:
+#       from_secret: TF_VAR_CI_ID
+#     TF_VAR_CI_KEY:
+#       from_secret: TF_VAR_CI_KEY
+#     TF_VAR_NAMESPACE: prod
+#   when:
+#     branch:
+#       include:
+#       - master
+#       exclude:
+#       - plan/*
+#     event:
+#     - promote
+#     target:
+#     - prod
+
+- name: renew-vault-tokens
+  pull: if-not-exists
+  image: *vault-image
+  commands:
+    ### NOTRE:
+    # Renew Dev Drone Vault Token - once Notprod branch is merged to master
+    # the below Dev section needs to be uncommented
+    - export VAULT_TOKEN=$${VAULT_TOKEN_SIT}
+    - export VAULT_ADDR=$${VAULT_ADDR_SIT}
+    - vault token renew > /dev/null
+    # Renew NotProd Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_NOTPROD}
+    - export VAULT_ADDR=$${VAULT_ADDR_NOTPROD}
+    - vault token renew > /dev/null
+    # Renew Prod Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_PROD}
+    - export VAULT_ADDR=$${VAULT_ADDR_PROD}
+    - vault token renew > /dev/null
+  environment:
+    VAULT_ADDR_SIT:
+      from_secret: VAULT_ADDR_SIT
+    VAULT_TOKEN_SIT:
+      from_secret: VAULT_TOKEN_SIT
+    VAULT_ADDR_NOTPROD:
+      from_secret: VAULT_ADDR_NOTPROD
+    VAULT_TOKEN_NOTPROD:
+      from_secret: VAULT_TOKEN_NOTPROD
+    VAULT_ADDR_PROD:
+      from_secret: VAULT_ADDR_PROD
+    VAULT_TOKEN_PROD:
+      from_secret: VAULT_TOKEN_PROD
+  when:
+    event:
+      - cron
+    cron:
+      - renew-vault-tokens
 
 services:
   - name: docker
