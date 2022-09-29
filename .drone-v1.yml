@@ -44,8 +44,8 @@ x-anchors:
     - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
     - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
-    - export CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
-    - export CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     # - echo -e "provider \"aws\" {\n  region = \"eu-west-2\"\n}" > provider.tf
     # - echo -e "terraform {\n  backend \"s3\" {}\n}" > backend.tf
     # - echo -e "remote_state {\n  backend = \"s3\"\n  config = {\n  bucket = \"$BUCKET\"\n  region = \"eu-west-2\"\n  dynamodb_table = \"terraform-state\"\n  key = \"$ENV/$STATE_FILE.tfstate\"\n  encrypt = true \n  }\n}" > terragrunt.hcl
@@ -60,8 +60,8 @@ x-anchors:
     - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
     - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
-    - export CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
-    - export CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
@@ -74,8 +74,8 @@ x-anchors:
     - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
     - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
-    - export CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
-    - export CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    - export TF_VAR_CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    - export TF_VAR_CI_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
