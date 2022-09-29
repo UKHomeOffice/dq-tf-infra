@@ -70,8 +70,8 @@ x-anchors:
   tf-plan: &tf-plan
     - source state_secret.sh
     - source set_aws_secrets.sh
-    - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
-    - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
+    # - export AWS_ACCESS_KEY_ID=$${STATE_AWS_ACCESS_KEY_ID}
+    # - export AWS_SECRET_ACCESS_KEY=$${STATE_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_APPS_ID=$${DEP_AWS_ACCESS_KEY_ID}
     - export TF_VAR_APPS_KEY=$${DEP_AWS_SECRET_ACCESS_KEY}
     - export TF_VAR_CI_ID=$${STATE_AWS_ACCESS_KEY_ID}
@@ -140,22 +140,22 @@ steps:
     event:
     - push
 
-- name: validate-tf
-  pull: if-not-exists
-  image: *terragrunt-image
-  commands:
-    *tf-validate
-  environment:
-    DOMAIN_JOINER_PWD:
-      from_secret: DOMAIN_JOINER_PWD
-    SSH_KEY:
-      from_secret: SSH_KEY
-  when:
-    branch:
-      exclude:
-      - master
-    event:
-    - push
+# - name: validate-tf
+#   pull: if-not-exists
+#   image: *terragrunt-image
+#   commands:
+#     *tf-validate
+#   environment:
+#     DOMAIN_JOINER_PWD:
+#       from_secret: DOMAIN_JOINER_PWD
+#     SSH_KEY:
+#       from_secret: SSH_KEY
+#   when:
+#     branch:
+#       exclude:
+#       - master
+#     event:
+#     - push
 
 - name: plan-notprod
   pull: if-not-exists
