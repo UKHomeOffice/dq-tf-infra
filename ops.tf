@@ -5,6 +5,7 @@ module "ops" {
     aws = aws.APPS
   }
 
+
   naming_suffix                                = local.naming_suffix
   cidr_block                                   = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16"
   vpc_subnet_cidr_block                        = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/24"
