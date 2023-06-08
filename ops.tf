@@ -14,6 +14,7 @@ module "ops" {
   az                                           = "eu-west-2a"
   bastion_linux_ip                             = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
   bastions_windows_ip                          = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.16"]
+  bastion1_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12"
   bastion2_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13"
   bastion3_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14"
   bastion4_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15"
