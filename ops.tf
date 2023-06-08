@@ -13,8 +13,7 @@ module "ops" {
   tableau_subnet_cidr_block                    = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.0/24"
   az                                           = "eu-west-2a"
   bastion_linux_ip                             = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
-  bastions_windows_ip                          = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.16"]
-  bastion1_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12"
+  bastions_windows_ip                          = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.16"]
   bastion2_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13"
   bastion3_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14"
   bastion4_windows_ip                          = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15"
@@ -22,7 +21,6 @@ module "ops" {
   analysis_instance_ip                         = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.8"
   tableau_deployment_ip                        = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.10", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.11", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.12", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.14"]
   tableau_nineteen_deployment_ip               = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.15"
-  ad_aws_ssm_document_name                     = module.ad.ad_aws_ssm_document_name
   ad_writer_instance_profile_name              = module.ad.ad_writer_instance_profile_name
   adminpassword                                = data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]
   log_archive_s3_bucket                        = module.apps.log_archive_bucket_id
