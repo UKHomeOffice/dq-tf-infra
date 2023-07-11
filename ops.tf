@@ -21,6 +21,7 @@ module "ops" {
   ad_writer_instance_profile_name              = module.ad.ad_writer_instance_profile_name
   adminpassword                                = data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]
   log_archive_s3_bucket                        = module.apps.log_archive_bucket_id
+  foo_name                                     = "some text"
   s3_bucket_name                               = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
   httpd_config_bucket_name                     = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
   data_archive_bucket_name                     = "s3-dq-data-archive-bucket-${var.NAMESPACE}"
