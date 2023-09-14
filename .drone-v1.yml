@@ -150,10 +150,6 @@ steps:
       from_secret: TF_VAR_CI_KEY
   when:
     branch:
-      include:
-      - master
-      exclude:
-      - plan/*
     event:
     - push
 
