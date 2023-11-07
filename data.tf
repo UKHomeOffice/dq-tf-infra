@@ -38,10 +38,21 @@ data "aws_caller_identity" "ci" {
   provider = aws.CI
 }
 
+resource "random_string" "AdminPassword" {
+  length  = 16
+  special = false
+}
+
+
+locals {
+  AdminPassword = var.AdminPassword == false ? var.AdminPassword : random_string.AdminPassword.result
+}
+
+
 data "aws_kms_secrets" "ad_joiner_password" {
   secret {
     name    = "ad_joiner_password"
-    payload = " "
+    payload = local.AdminPassword
 
     context = {
       terraform = "active_directory"
@@ -52,7 +63,7 @@ data "aws_kms_secrets" "ad_joiner_password" {
 data "aws_kms_secrets" "ad_admin_password" {
   secret {
     name    = "ad_admin_password"
-    payload = " "
+    payload = local.AdminPassword
 
     context = {
       terraform = "active_directory"
