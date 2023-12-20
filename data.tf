@@ -43,11 +43,9 @@ resource "random_string" "AdminPassword" {
   special = false
 }
 
-
 locals {
   AdminPassword = var.AdminPassword == false ? var.AdminPassword : random_string.AdminPassword.result
 }
-
 
 data "aws_kms_secrets" "ad_joiner_password" {
   secret {
