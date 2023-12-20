@@ -1,5 +1,5 @@
 module "ops" {
-  source = "github.com/UKHomeOffice/dq-tf-ops?ref=ad-password-bug"
+  source = "github.com/UKHomeOffice/dq-tf-ops"
 
   providers = {
     aws = aws.APPS
