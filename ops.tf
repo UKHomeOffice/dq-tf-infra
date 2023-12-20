@@ -20,7 +20,6 @@ module "ops" {
   tableau_deployment_ip                        = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.10", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.11", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.12", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.14"]
   ad_aws_ssm_document_name                     = module.ad.ad_aws_ssm_document_name
   ad_writer_instance_profile_name              = module.ad.ad_writer_instance_profile_name
-  adminpassword                                = data.aws_kms_secrets.ad_admin_password.plaintext["ad_admin_password"]
   log_archive_s3_bucket                        = module.apps.log_archive_bucket_id
   httpd_config_bucket_name                     = "s3-dq-httpd-config-bucket-${var.NAMESPACE}"
   data_archive_bucket_name                     = "s3-dq-data-archive-bucket-${var.NAMESPACE}"

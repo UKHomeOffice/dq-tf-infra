@@ -26,6 +26,3 @@ variable "account_id" {
     "prod"    = "337779336338"
   }
 }
-
-variable "AdminPassword" {
-}
