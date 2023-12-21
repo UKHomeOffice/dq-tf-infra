@@ -404,6 +404,9 @@ steps:
     TF_VAR_namespace: notprod
     TF_VAR_naming_suffix: apps-notprod-dq
   when:
+    branch:
+      include:
+        - master
     event:
       - push
 
