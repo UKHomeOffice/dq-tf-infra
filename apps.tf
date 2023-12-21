@@ -1,5 +1,5 @@
 module "apps" {
-  source = "github.com/UKHomeOffice/dq-tf-apps"
+  source = "github.com/UKHomeOffice/dq-tf-apps?ref=bugfix/bucket-principals"
 
   providers = {
     aws = aws.APPS
