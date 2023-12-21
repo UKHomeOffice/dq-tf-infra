@@ -37,4 +37,3 @@ data "aws_caller_identity" "apps" {
 data "aws_caller_identity" "ci" {
   provider = aws.CI
 }
-
