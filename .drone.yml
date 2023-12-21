@@ -114,8 +114,13 @@ x-anchors:
     # Get AWS secrets for Target Account
     - export AWS_SECRETS_FILE="set_aws_secrets_$${AWS_ENV}.sh"
     - source $${AWS_SECRETS_FILE}
+    # Add SSH_KEY to allow git clone
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_namespace="$${AWS_ENV}"
+    # Make Domain Joiner password available within TF (don't know why yet)
+    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     # VALIDATE
     - terragrunt validate
 
@@ -129,10 +134,13 @@ x-anchors:
     # Get AWS secrets for Target Account
     - export AWS_SECRETS_FILE="set_aws_secrets_$${AWS_ENV}.sh"
     - source $${AWS_SECRETS_FILE}
-    # Make Domain Joiner password available within TF (don't know why yet)
-    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
+    # Add SSH_KEY to allow git clone
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_namespace="$${AWS_ENV}"
+    # Make Domain Joiner password available within TF (don't know why yet)
+    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     # PLAN
     - terragrunt plan -lock=false -out=plan_$${AWS_ENV}
 
@@ -146,8 +154,13 @@ x-anchors:
     # Get AWS secrets for Target Account
     - export AWS_SECRETS_FILE="set_aws_secrets_$${AWS_ENV}.sh"
     - source $${AWS_SECRETS_FILE}
+    # Add SSH_KEY to allow git clone
+    - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+    - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_namespace="$${AWS_ENV}"
+    # Make Domain Joiner password available within TF (don't know why yet)
+    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     # APPLY
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
