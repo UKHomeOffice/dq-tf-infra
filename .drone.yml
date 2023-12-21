@@ -20,7 +20,8 @@ platform:
   arch: amd64
 
 environment:
-  BUCKET: terraform-statefiles-all-envs
+  BUCKET: dq-tf-infra-terraform-state
+#  BUCKET: terraform-statefiles-all-envs
   STATE_FILE: dq-tf-infra
   TF_VERSION: 0.12
 #  TF_VERSION: 1.6
@@ -30,7 +31,8 @@ environment:
 x-anchors:
   retrieve-state-aws-key: &retrieve-state-aws-key
     - vault --version
-    # All Terraform State is held in an S3 Bucket in the 'test' AWS Account
+    # All Terraform State is held in an S3 Bucket - normally this is in the 'test' AWS Account
+    # BUT dq-tf-infra NotProd and Prod deployments' Terraform State is held in an S3 Bucket in the 'CI' AWS Account
     # - so all Terraform steps will need to source AWS_SECRETS_FILE
     - export AWS_ENV="state"
     - export AWS_CREDS_FILE="aws_creds_$${AWS_ENV}.json"
@@ -145,15 +147,15 @@ steps:
   image: *vault-image
   commands: *retrieve-state-aws-key
   environment:
-#    # At present the statefiles are held in CI (=SIT)
-#    VAULT_ADDR:
-#      from_secret: VAULT_ADDR_SIT
-#    VAULT_TOKEN:
-#      from_secret: VAULT_TOKEN_SIT
+    # At present the statefiles are held in CI (=SIT)
     VAULT_ADDR:
-      from_secret: VAULT_ADDR_DEV
+      from_secret: VAULT_ADDR_SIT
     VAULT_TOKEN:
-      from_secret: VAULT_TOKEN_DEV
+      from_secret: VAULT_TOKEN_SIT
+#    VAULT_ADDR:
+#      from_secret: VAULT_ADDR_DEV
+#    VAULT_TOKEN:
+#      from_secret: VAULT_TOKEN_DEV
   when:
     event:
       - push
