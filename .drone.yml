@@ -2,8 +2,8 @@
 global-variables:
   testrunner-image: &testrunner-image quay.io/ukhomeofficedigital/tf-testrunner:32 # TF0.12
 #  testrunner-image: &testrunner-image quay.io/ukhomeofficedigital/tf-testrunner:TF1.6
-  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18 # TF0.12
-#  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.26.2 # TF0.13
+#  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.23.18 # TF0.12
+  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.26.2 # TF0.13
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.28.6 # TF0.14
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.30.7 # TF0.15
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.35.20 # TF1.0
@@ -23,7 +23,7 @@ environment:
   BUCKET: dq-tf-infra-terraform-state
 #  BUCKET: terraform-statefiles-all-envs
   STATE_FILE: dq-tf-infra
-  TF_VERSION: 0.12
+  TF_VERSION: 0.13
 #  TF_VERSION: 1.6
   AWS_REGION: eu-west-2
   DEPLOYMENT_TYPE: dq-tf-infra
