@@ -51,7 +51,7 @@ Input data for resources within this repo.
 This project currently depends on:
 
 * drone v0.5+dev
-* terraform v0.11.1+
+* terraform v0.12+
 * terragrunt v0.13.21+
 * python v3.6.3+
 
