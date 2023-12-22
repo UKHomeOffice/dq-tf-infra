@@ -20,8 +20,8 @@ platform:
   arch: amd64
 
 environment:
-  BUCKET: dq-tf-infra-terraform-state
-#  BUCKET: terraform-statefiles-all-envs
+#  BUCKET: dq-tf-infra-terraform-state
+  BUCKET: terraform-statefiles-all-envs
   STATE_FILE: dq-tf-infra
   TF_VERSION: 0.12
 #  TF_VERSION: 1.6
@@ -168,16 +168,16 @@ steps:
   image: *vault-image
   commands: *retrieve-state-aws-key
   environment:
-    # At present the statefiles are held in CI (=SIT)
-    VAULT_ADDR:
-      from_secret: VAULT_ADDR_SIT
-    VAULT_TOKEN:
-      from_secret: VAULT_TOKEN_SIT
-#    # Would like to store state files in Test (=Dev)
+#    # At present the statefiles are held in CI (=SIT)
 #    VAULT_ADDR:
-#      from_secret: VAULT_ADDR_DEV
+#      from_secret: VAULT_ADDR_SIT
 #    VAULT_TOKEN:
-#      from_secret: VAULT_TOKEN_DEV
+#      from_secret: VAULT_TOKEN_SIT
+    # Would like to store state files in Test (=Dev)
+    VAULT_ADDR:
+      from_secret: VAULT_ADDR_DEV
+    VAULT_TOKEN:
+      from_secret: VAULT_TOKEN_DEV
   when:
     event:
       - push
