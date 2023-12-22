@@ -1,6 +1,7 @@
 module "apps" {
   source = "github.com/UKHomeOffice/dq-tf-apps?ref=yel-8750-migrate-tf-version"
 
+
   providers = {
     aws = aws.ENV_ACCT
   }
