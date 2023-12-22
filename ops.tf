@@ -2,7 +2,7 @@ module "ops" {
   source = "github.com/UKHomeOffice/dq-tf-ops"
 
   providers = {
-    aws = aws.APPS
+    aws = aws.ENV_ACCT
   }
 
   naming_suffix                                = local.naming_suffix
