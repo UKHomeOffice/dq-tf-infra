@@ -1,5 +1,5 @@
 module "ops" {
-  source = "github.com/UKHomeOffice/dq-tf-ops"
+  source = "github.com/UKHomeOffice/dq-tf-ops?ref=yel-8750-remove-domain-joiner-var"
 
   providers = {
     aws = aws.APPS
