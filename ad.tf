@@ -1,6 +1,6 @@
 module "ad" {
   providers = {
-    aws = aws.APPS
+    aws = aws.ENV_ACCT
   }
 
   source = "github.com/UKHomeOffice/dq-tf-ad"

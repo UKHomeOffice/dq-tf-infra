@@ -2,7 +2,7 @@ module "ops" {
   source = "github.com/UKHomeOffice/dq-tf-ops"
 
   providers = {
-    aws = aws.APPS
+    aws = aws.ENV_ACCT
   }
 
   naming_suffix                                = local.naming_suffix
@@ -33,7 +33,6 @@ module "ops" {
   dq_pipeline_ops_readonly_bucket_list         = module.apps.dq_pipeline_ops_readonly_bucket_list
   apps_aws_bucket_key                          = module.apps.aws_bucket_key
   namespace                                    = var.NAMESPACE
-  domain_joiner_pwd                            = var.DOMAIN_JOINER_PWD
 
   vpc_peering_connection_ids = {
     ops_and_apps    = aws_vpc_peering_connection.apps_to_ops.id
