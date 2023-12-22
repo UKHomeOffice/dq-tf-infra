@@ -143,8 +143,6 @@ x-anchors:
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_namespace="$${AWS_ENV}"
-    # Make Domain Joiner password available within TF (don't know why yet)
-    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     # PLAN
     - terragrunt plan -lock=false -out=plan_$${AWS_ENV}
 
@@ -163,8 +161,6 @@ x-anchors:
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_namespace="$${AWS_ENV}"
-    # Make Domain Joiner password available within TF (don't know why yet)
-    - export TF_VAR_DOMAIN_JOINER_PWD=$${DOMAIN_JOINER_PWD}
     # APPLY
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
