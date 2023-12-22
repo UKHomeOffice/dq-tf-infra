@@ -96,6 +96,8 @@ x-anchors:
     - export AWS_SECRETS_FILE="set_aws_secrets_$${AWS_ENV}.sh"
     - source $${AWS_SECRETS_FILE}
     # Create config files for Terragrunt
+    - echo -e "provider \"aws\" {\n  region = \"$AWS_DEFAULT_REGION\"\n}" > provider.tf
+    - echo -e "terraform {\n  backend \"s3\" {}\n}" > backend.tf
     - echo -e "remote_state {\n  backend = \"s3\"\n  config = {\n  bucket = \"$BUCKET\"\n  region = \"$AWS_DEFAULT_REGION\"\n  dynamodb_table = \"terraform-state\"\n  key = \"$DEPLOYMENT_TYPE/terraform-$TF_VERSION/$AWS_ENV/$STATE_FILE.tfstate\"\n  encrypt = true \n  }\n}" > terragrunt.hcl
     # Add SSH_KEY to allow git clone
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
