@@ -106,7 +106,7 @@ x-anchors:
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
-    - export TF_VAR_namespace="$${AWS_ENV}"
+    - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # INIT
     - terragrunt init -reconfigure
 
@@ -124,7 +124,7 @@ x-anchors:
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
-    - export TF_VAR_namespace="$${AWS_ENV}"
+    - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # VALIDATE
     - terragrunt validate
 
@@ -142,7 +142,7 @@ x-anchors:
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
-    - export TF_VAR_namespace="$${AWS_ENV}"
+    - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # PLAN
     - terragrunt plan -lock=false -out=plan_$${AWS_ENV}
 
@@ -160,7 +160,7 @@ x-anchors:
     - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
-    - export TF_VAR_namespace="$${AWS_ENV}"
+    - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # APPLY
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
