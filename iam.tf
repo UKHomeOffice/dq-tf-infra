@@ -2,7 +2,7 @@
 
 # resource "aws_iam_role_policy" "write_to_cw" {
 #   name     = "dq-tf-infra-write-to-cw-count-${count.index}"
-#   provider = aws.APPS
+#   provider = aws.ENV_ACCT
 #   role = element(
 #     concat(
 #       module.apps.iam_roles,
@@ -72,7 +72,7 @@
 
 resource "aws_iam_policy" "write_to_cw_new" {
   name     = "dq-tf-infra-write-to-cw"
-  provider = aws.APPS
+  provider = aws.ENV_ACCT
 
   policy = <<EOF
 {

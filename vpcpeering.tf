@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_vpc_peering_connection" "peering_to_apps" {
-  provider      = aws.APPS
+  provider      = aws.ENV_ACCT
   vpc_id        = module.peering.peeringvpc_id
   peer_vpc_id   = module.apps.appsvpc_id
   peer_owner_id = data.aws_caller_identity.apps.account_id
@@ -23,7 +23,7 @@ resource "aws_vpc_peering_connection" "peering_to_apps" {
 }
 
 resource "aws_vpc_peering_connection" "peering_to_ops" {
-  provider      = aws.APPS
+  provider      = aws.ENV_ACCT
   vpc_id        = module.peering.peeringvpc_id
   peer_vpc_id   = module.ops.opsvpc_id
   peer_owner_id = data.aws_caller_identity.apps.account_id
@@ -43,7 +43,7 @@ resource "aws_vpc_peering_connection" "peering_to_ops" {
 }
 
 resource "aws_vpc_peering_connection" "apps_to_ops" {
-  provider      = aws.APPS
+  provider      = aws.ENV_ACCT
   vpc_id        = module.apps.appsvpc_id
   peer_vpc_id   = module.ops.opsvpc_id
   peer_owner_id = data.aws_caller_identity.apps.account_id

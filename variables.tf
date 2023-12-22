@@ -5,10 +5,16 @@ variable "CI_ID" {
 variable "CI_KEY" {
 }
 
-variable "APPS_ID" {
+#variable "APPS_ID" {
+#}
+#
+#variable "APPS_KEY" {
+#}
+
+variable "ENV_ACCT_ID" {
 }
 
-variable "APPS_KEY" {
+variable "ENV_ACCT_KEY" {
 }
 
 #variable "NAMESPACE" {

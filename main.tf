@@ -19,9 +19,16 @@ provider "aws" {
   secret_key = var.CI_KEY
 }
 
+#provider "aws" {
+#  alias      = "APPS"
+#  region     = "eu-west-2"
+#  access_key = var.APPS_ID
+#  secret_key = var.APPS_KEY
+#}
+
 provider "aws" {
-  alias      = "APPS"
+  alias      = "ENV_ACCT"
   region     = "eu-west-2"
-  access_key = var.APPS_ID
-  secret_key = var.APPS_KEY
+  access_key = var.ENV_ACCT_ID
+  secret_key = var.ENV_ACCT_KEY
 }

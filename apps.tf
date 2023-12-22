@@ -2,7 +2,7 @@ module "apps" {
   source = "github.com/UKHomeOffice/dq-tf-apps"
 
   providers = {
-    aws = aws.APPS
+    aws = aws.ENV_ACCT
   }
 
   cidr_block                      = "10.1.0.0/16"
