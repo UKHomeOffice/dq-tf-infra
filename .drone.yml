@@ -82,8 +82,6 @@ x-anchors:
     # Get the AWS credentials - to allow Terraform to deploy to the Target Account
     - echo "export TF_VAR_ENV_ACCT_ID=$${ACCESS_KEY}" > $${AWS_SECRETS_FILE}
     - echo "export TF_VAR_ENV_ACCT_KEY=$${SECRET_KEY}" >> $${AWS_SECRETS_FILE}
-#    - echo "export TF_VAR_APPS_ID=$${ACCESS_KEY}" > $${AWS_SECRETS_FILE}
-#    - echo "export TF_VAR_APPS_KEY=$${SECRET_KEY}" >> $${AWS_SECRETS_FILE}
     - echo "export AWS_DEFAULT_REGION=$${AWS_REGION}" >> $${AWS_SECRETS_FILE}
 
   check-format: &check-format
@@ -94,9 +92,6 @@ x-anchors:
     # Get AWS secrets for TF State
     - export AWS_SECRETS_FILE="set_aws_secrets_state.sh"
     - source $${AWS_SECRETS_FILE}
-#    # Get AWS secrets for CI account
-#    - export AWS_SECRETS_FILE="set_aws_secrets_ci.sh"
-#    - source $${AWS_SECRETS_FILE}
     # Get AWS secrets for Target Account
     - export AWS_SECRETS_FILE="set_aws_secrets_$${AWS_ENV}.sh"
     - source $${AWS_SECRETS_FILE}
@@ -186,7 +181,7 @@ steps:
       - push
       - promote
 
-  # Used to access CI account (unsure why, related to AD Password?)
+  # Used to access CI account
 - name: retrieve-aws-secrets-tf-ci
   pull: always
   image: *vault-image
