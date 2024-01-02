@@ -160,6 +160,7 @@ x-anchors:
     # Additional env vars
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # APPLY
+    - force-fail
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
 steps:
