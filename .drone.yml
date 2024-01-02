@@ -143,6 +143,7 @@ x-anchors:
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # PLAN
     - terragrunt plan -lock=false -out=plan_$${AWS_ENV}
+    - force-fail
 
   tf-apply: &tf-apply
     # Get AWS secrets for TF State
@@ -160,7 +161,6 @@ x-anchors:
     # Additional env vars
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # APPLY
-    - force-fail
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
 steps:
