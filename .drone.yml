@@ -6,9 +6,9 @@ global-variables:
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.26.2 # TF0.13
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.28.6 # TF0.14
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.30.7 # TF0.15
-  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.35.20 # TF1.0
+#  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.35.20 # TF1.0
 #  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:v0.48.5 # TF1.5
-#  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:TGv0.54.4_TFv1.6.6
+  terragrunt-image: &terragrunt-image quay.io/ukhomeofficedigital/dq-docker-terragrunt:TGv0.54.4_TFv1.6.6
   vault-image: &vault-image docker.digital.homeoffice.gov.uk/dq/dq-vault-awscli:1.43
 
 kind: pipeline
@@ -24,8 +24,8 @@ environment:
 #  BUCKET: terraform-statefiles-all-envs
   STATE_FILE: dq-tf-infra
 #  TF_VERSION: 0.13
-  TF_VERSION: 1.0
-#  TF_VERSION: 1.6
+#  TF_VERSION: 1.0
+  TF_VERSION: 1.6
   AWS_REGION: eu-west-2
   DEPLOYMENT_TYPE: dq-tf-infra
 
@@ -226,7 +226,6 @@ steps:
     event:
       - push
 
-
 - name: check-format
   pull: if-not-exists
   image: *terragrunt-image
@@ -257,7 +256,6 @@ steps:
     event:
       - push
 
-# NOT YET TESTED - will test when merging to master
 - name: apply-notprod
   pull: if-not-exists
   image: *terragrunt-image
@@ -311,8 +309,6 @@ steps:
       - promote
       - push
 
-
-# NOT YET TESTED - will test when merging to master
 - name: apply-prod
   pull: if-not-exists
   image: *terragrunt-image
