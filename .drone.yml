@@ -106,7 +106,6 @@ x-anchors:
     # Additional env vars
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     # INIT
-    - force-fail
     - terragrunt init -reconfigure
 
   tf-validate: &tf-validate
@@ -227,7 +226,6 @@ steps:
     event:
       - push
 
-
 - name: check-format
   pull: if-not-exists
   image: *terragrunt-image
@@ -310,7 +308,6 @@ steps:
     event:
       - promote
       - push
-
 
 - name: apply-prod
   pull: if-not-exists
