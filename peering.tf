@@ -6,8 +6,8 @@ module "peering" {
   }
 
   cidr_block                = "10.3.0.0/16"
-  haproxy_subnet_cidr_block = "10.3.0.0/24"
-  public_subnet_cidr_block  = "10.3.3.0/24"
+  haproxy_subnet_cidr_block = "10.3.0.0/27"
+  public_subnet_cidr_block  = "10.3.3.0/27"
   haproxy_private_ip        = "10.3.0.11"
   haproxy_private_ip2       = "10.3.0.12"
   s3_bucket_name            = "s3-dq-peering-haproxy-config-bucket-${var.NAMESPACE}"

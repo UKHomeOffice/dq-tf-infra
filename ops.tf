@@ -6,11 +6,11 @@ module "ops" {
   }
 
   naming_suffix                                = local.naming_suffix
-  cidr_block                                   = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/16"
-  vpc_subnet_cidr_block                        = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/24"
-  public_subnet_cidr_block                     = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.0/24"
-  ad_subnet_cidr_block                         = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.4.0/24"
-  tableau_subnet_cidr_block                    = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.0/24"
+  cidr_block                                   = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/24"
+  vpc_subnet_cidr_block                        = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.0/27"
+  public_subnet_cidr_block                     = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.2.0/27"
+  ad_subnet_cidr_block                         = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.4.0/27"
+  tableau_subnet_cidr_block                    = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.6.0/27"
   az                                           = "eu-west-2a"
   bastion_linux_ip                             = "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.11"
   bastions_windows_ip                          = ["${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.12", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.13", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.14", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.15", "${var.NAMESPACE == "prod" ? "10.2" : "10.8"}.0.16"]
