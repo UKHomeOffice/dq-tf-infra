@@ -130,3 +130,25 @@ resource "aws_iam_policy" "write_to_cw_new" {
 EOF
 
 }
+# =============================================================================
+# FIX FOR SSM RUN COMMAND (required before 16 June 2026)
+# Protected with lifecycle block to prevent accidental destruction in Prod
+# =============================================================================
+
+resource "aws_iam_role_policy_attachment" "ops_win_ssm_core" {
+  role       = "ops-win"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
+  #lifecycle {
+  #  prevent_destroy = true
+  #}
+}
+
+resource "aws_iam_role_policy_attachment" "ops_win_tableau_ssm_core" {
+  role       = "ops-win-tableau"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
+  #lifecycle {
+  #  prevent_destroy = true
+  #}
+}
