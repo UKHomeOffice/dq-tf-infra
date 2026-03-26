@@ -140,10 +140,7 @@ resource "aws_iam_role_policy_attachment" "ops_win_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 
   lifecycle {
-    ignore_changes = [
-      role,
-      policy_arn ,
-    ]
+    prevent_destroy = true
   }
 }
 
@@ -152,9 +149,6 @@ resource "aws_iam_role_policy_attachment" "ops_win_tableau_ssm_core" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 
   lifecycle {
-    ignore_changes = [
-      role,
-      policy_arn ,
-    ]
+    prevent_destroy = true
   }
 }
