@@ -119,7 +119,14 @@ resource "aws_iam_policy" "write_to_cw_new" {
           "ec2messages:SendReply",
           "ds:CreateComputer",
           "ds:DescribeDirectories",
-          "ec2:DescribeInstanceStatus"
+          "ec2:DescribeInstanceStatus",
+          # ─────────────────────────────────────────────────────────────
+          # NEW ssmmessages permissions (required after 16 June 2026)
+          # ─────────────────────────────────────────────────────────────
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel"
       ],
       "Resource": [
           "*"
