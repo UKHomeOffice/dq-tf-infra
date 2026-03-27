@@ -124,6 +124,10 @@ resource "aws_iam_policy" "write_to_cw_new" {
           "ssmmessages:CreateDataChannel",
           "ssmmessages:OpenControlChannel",
           "ssmmessages:OpenDataChannel"
+          "ssm:SendCommand",
+          "ssm:ListCommands",
+          "ssm:ListCommandInvocations",
+          "ssm:GetCommandInvocation"
       ],
       "Resource": [
           "*"
