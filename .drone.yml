@@ -260,7 +260,7 @@ steps:
 
 - name: force-unlock-delete
   image: *terragrunt-image
-  commands: *tf-plan
+  commands: *tf-apply
   when:
     branch:
       include:
