@@ -159,6 +159,8 @@ x-anchors:
     - ssh-keyscan -t rsa -p 2222 gitlab.digital.homeoffice.gov.uk >>  ~/.ssh/known_hosts
     # Additional env vars
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
+    #Force Deletion of LockID
+    - terraform force-unlock -force a9050637-690f-0c76-ce04-c8316a77fe66 || true
     # APPLY
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
@@ -253,6 +255,17 @@ steps:
     DOMAIN_JOINER_PWD:
       from_secret: DOMAIN_JOINER_PWD
   when:
+    event:
+      - push
+
+- name: force-unlock-delete
+  image: *terragrunt-image
+  commands: *tf-plan
+  when:
+    branch:
+      include:
+        - YEL*
+        - feature/*
     event:
       - push
 
