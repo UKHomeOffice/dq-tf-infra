@@ -160,7 +160,8 @@ x-anchors:
     # Additional env vars
     - export TF_VAR_NAMESPACE="$${AWS_ENV}"
     #Force Deletion of LockID
-    - terraform force-unlock -force a9050637-690f-0c76-ce04-c8316a77fe66 || true
+    #- terraform force-unlock -force a9050637-690f-0c76-ce04-c8316a77fe66 || true
+    - aws dynamodb delete-item --table-name terrafom-state --key '{"LockID":{"S":"a9050637-690f-0c76-ce04-c8316a77fe66"}}' --region eu-west-2
     # APPLY
     - terragrunt apply -auto-approve -parallelism=50 plan_$${AWS_ENV}
 
@@ -258,7 +259,7 @@ steps:
     event:
       - push
 
-- name: force-unlock-delete
+- name: force-unlock-dynamodb
   image: *terragrunt-image
   commands: *tf-apply
   when:
