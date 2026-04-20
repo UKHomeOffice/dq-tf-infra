@@ -44,7 +44,7 @@ x-anchors:
     - export ACCESS_KEY=$(cat $${AWS_CREDS_FILE} | grep access_key | awk -F ' ' '{print $2}')
     - export SECRET_KEY=$(cat $${AWS_CREDS_FILE} | grep secret_key | awk -F ' ' '{print $2}')
     # Update the token TTL to 10mins
-    - vault lease renew -increment=3600 $${LEASE_ID}
+    - vault lease renew -increment=28800 $${LEASE_ID}
     # Get the AWS credentials - for `Terragrunt/Terraform`
     - echo "export AWS_ACCESS_KEY_ID=$${ACCESS_KEY}" > $${AWS_SECRETS_FILE}
     - echo "export AWS_SECRET_ACCESS_KEY=$${SECRET_KEY}" >> $${AWS_SECRETS_FILE}
@@ -62,7 +62,7 @@ x-anchors:
     - export ACCESS_KEY=$(cat $${AWS_CREDS_FILE} | grep access_key | awk -F ' ' '{print $2}')
     - export SECRET_KEY=$(cat $${AWS_CREDS_FILE} | grep secret_key | awk -F ' ' '{print $2}')
     # Update the token TTL to 10mins
-    - vault lease renew -increment=3600 $${LEASE_ID}
+    - vault lease renew -increment=28800 $${LEASE_ID}
     # Get the AWS credentials - to allow Terraform to deploy to the Target Account
     - echo "export TF_VAR_CI_ID=$${ACCESS_KEY}" > $${AWS_SECRETS_FILE}
     - echo "export TF_VAR_CI_KEY=$${SECRET_KEY}" >> $${AWS_SECRETS_FILE}
