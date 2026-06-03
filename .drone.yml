@@ -345,6 +345,14 @@ steps:
     - export VAULT_ADDR=$${VAULT_ADDR_PROD}
     - vault token renew > /dev/null
   environment:
+    VAULT_ADDR_DEV:
+      from_secret: VAULT_ADDR_DEV
+    VAULT_TOKEN_DEV:
+      from_secret: VAULT_TOKEN_DEV
+    VAULT_ADDR_SIT:
+      from_secret: VAULT_ADDR_SIT
+    VAULT_TOKEN_SIT:
+      from_secret: VAULT_TOKEN_SIT
     VAULT_ADDR_NOTPROD:
       from_secret: VAULT_ADDR_NOTPROD
     VAULT_TOKEN_NOTPROD:
