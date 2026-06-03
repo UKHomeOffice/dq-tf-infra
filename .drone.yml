@@ -363,7 +363,6 @@ steps:
       from_secret: VAULT_TOKEN_PROD
   when:
     event:
-      #- cron
-       - push
-    #cron:
-    #  - renew-vault-tokens
+      - cron
+    cron:
+      - renew-vault-tokens
