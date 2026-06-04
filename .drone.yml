@@ -323,3 +323,46 @@ steps:
       - promote
     target:
       - prod
+
+- name: renew-vault-tokens
+  pull: if-not-exists
+  image: *vault-image
+  commands:
+    # Renew DEV Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_DEV}
+    - export VAULT_ADDR=$${VAULT_ADDR_DEV}
+    - vault token renew > /dev/null
+    # Renew SIT Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_SIT}
+    - export VAULT_ADDR=$${VAULT_ADDR_SIT}
+    - vault token renew > /dev/null
+    # Renew NotProd Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_NOTPROD}
+    - export VAULT_ADDR=$${VAULT_ADDR_NOTPROD}
+    - vault token renew > /dev/null
+    # Renew Prod Drone Vault Token
+    - export VAULT_TOKEN=$${VAULT_TOKEN_PROD}
+    - export VAULT_ADDR=$${VAULT_ADDR_PROD}
+    - vault token renew > /dev/null
+  environment:
+    VAULT_ADDR_DEV:
+      from_secret: VAULT_ADDR_DEV
+    VAULT_TOKEN_DEV:
+      from_secret: VAULT_TOKEN_DEV
+    VAULT_ADDR_SIT:
+      from_secret: VAULT_ADDR_SIT
+    VAULT_TOKEN_SIT:
+      from_secret: VAULT_TOKEN_SIT
+    VAULT_ADDR_NOTPROD:
+      from_secret: VAULT_ADDR_NOTPROD
+    VAULT_TOKEN_NOTPROD:
+      from_secret: VAULT_TOKEN_NOTPROD
+    VAULT_ADDR_PROD:
+      from_secret: VAULT_ADDR_PROD
+    VAULT_TOKEN_PROD:
+      from_secret: VAULT_TOKEN_PROD
+  when:
+    event:
+      - cron
+    cron:
+      - renew-vault-tokens
